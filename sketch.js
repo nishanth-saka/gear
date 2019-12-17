@@ -13,13 +13,13 @@ function modelReady() {
   console.log('Model is ready!!!');  
 
   label = 'loading classifier..';
-  classifier.load('model.json', customModelReady);
+  // classifier.load('model.json', customModelReady);
 }
 
 function customModelReady(){
   console.log('Custom Model Set..');  
   label = 'Model ready!';  
-  classifier.classify(gotResults);
+  // classifier.classify(gotResults);
 }
 
 function videoReady() {
