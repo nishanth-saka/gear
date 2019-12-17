@@ -45,7 +45,7 @@ function setup() {
   var constraints = {
     audio: false,
     video: {
-      facingMode: {{
+      facingMode: {
         exact: "environment"
       }
     }
