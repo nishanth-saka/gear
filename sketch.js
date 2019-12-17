@@ -18,9 +18,12 @@ function videoReady() {
 
 function whileTraining(loss){
   console.log('Training...');
+  label = 'Training...!';
   console.log(loss);
+  label = loss;
   
   if(!loss){
+    label = 'Training Complete!';
     console.log('Training Complete!');
     classifier.classify(gotResults);
   }
@@ -28,6 +31,7 @@ function whileTraining(loss){
 
 function gotResults(error, results) {
   if (error) {
+    label = error;
     console.error(error);
   } else {
     label = results;
@@ -59,7 +63,9 @@ function setup() {
     let res = classifier.addImage('pen');
     
     console.log('PEN');
-    console.log(res);                
+    console.log(res);           
+
+    label = 'PEN';     
   });
   
   meButton = createButton('me');
@@ -68,6 +74,8 @@ function setup() {
     console.log('Me!');
     console.log(res);                
     
+
+    label = 'Me';     
   });
   
   trainButton = createButton('TRAIN');
@@ -77,11 +85,15 @@ function setup() {
     
     console.log('TRAIN');
     console.log(res);   
+
+    label = 'TRAIN';    
   });
   
   saveButton = createButton('Save');
   saveButton.mousePressed(function(){
     classifier.save();
+
+    label = 'Save';    
   });
 }
 
