@@ -19,7 +19,7 @@ function modelReady() {
 function customModelReady(){
   console.log('Custom Model Set..');  
   label = 'Model ready!';  
-  // classifier.classify(gotResults);
+  // classifier.classify(gotResults); 
 }
 
 function videoReady() {
@@ -57,9 +57,10 @@ function setup() {
   var constraints = {
     audio: false,
     video: {
-      facingMode: {
-        exact: "environment"
-      }
+      facingMode: "user",
+      // facingMode: {
+      //   exact: "environment"
+      // }
     }
   };
   
