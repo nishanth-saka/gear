@@ -49,7 +49,7 @@ function setup() {
       }
     }
   });
-  
+
   video.hide();
   
   createCanvas(640, 480);
@@ -58,8 +58,6 @@ function setup() {
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
   
-  console.log('Classifier');
-  console.log(classifier);
   
   sampleButton = createButton('pen');
   sampleButton.mousePressed(function(args){
