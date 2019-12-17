@@ -5,11 +5,16 @@ let sampleButton;
 let trainButton;
 let saveButton;
 let meButton;
-let label = '';
+let label = 'loading model...';
 
 
 function modelReady() {
   console.log('Model is ready!!!');  
+  classifier.load('model.json', customModelReady);
+}
+
+function customModelReady(){
+  console.log('Custom Model is ready!!!');  
 }
 
 function videoReady() {
@@ -45,9 +50,7 @@ function setup() {
   var constraints = {
     audio: false,
     video: {
-      facingMode: {
-        exact: "environment"
-      }
+      facingMode: "user"
     }
   };
   
@@ -83,12 +86,14 @@ function setup() {
   trainButton = createButton('TRAIN');
   trainButton.mousePressed(function(){
     console.log('Training Begins');
-    let res = classifier.train(whileTraining);
-    
-    console.log('TRAIN');
-    console.log(res);   
+    classifier.train(whileTraining).then(function(res){
+      console.log('TRAIN');
+      console.log(res);   
 
-    label = 'TRAIN';    
+      label = 'TRAIN';
+    });
+    
+        
   });
   
   saveButton = createButton('Save');
