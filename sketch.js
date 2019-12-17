@@ -41,7 +41,15 @@ function gotResults(error, results) {
 
 function setup() {
   
-  video = createCapture(VIDEO);
+  video = createCapture({
+    audio: false,
+    video: {
+      facingMode: {
+        exact: "environment"
+      }
+    }
+  });
+  
   video.hide();
   
   createCanvas(640, 480);
