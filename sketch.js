@@ -9,7 +9,10 @@ let label = 'loading model...';
 
 
 function modelReady() {
+  label = 'modelReady..';
   console.log('Model is ready!!!');  
+
+  label = 'loading classifier..';
   classifier.load('model.json', customModelReady);
 }
 
@@ -20,6 +23,7 @@ function customModelReady(){
 }
 
 function videoReady() {
+  label = 'videoReady..';  
   console.log('Video is ready!!!');  
 }
 
@@ -63,27 +67,30 @@ function setup() {
   createCanvas(640, 480);
   background(200);  
   
+  label = 'initializing mobilenet...';
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+
+  label = 'initializing classifier...';
   classifier = mobilenet.classification(video, videoReady);   
   
-  sampleButton = createButton('pen');
+  sampleButton = createButton('RightWing');
   sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('pen');
+    let res = classifier.addImage('RightWing');
     
-    console.log('PEN');
+    console.log('RightWing');
     console.log(res);           
 
-    label = 'PEN';     
+    label = 'RightWing';     
   });
   
-  meButton = createButton('me');
+  meButton = createButton('LeftWing');
   meButton.mousePressed(function(args){
-    let res = classifier.addImage('me');
-    console.log('Me!');
+    let res = classifier.addImage('LeftWing');
+    console.log('LeftWing!');
     console.log(res);                
     
 
-    label = 'Me';     
+    label = 'LeftWing';     
   });
   
   trainButton = createButton('TRAIN');
