@@ -27,10 +27,13 @@ function gotResults(error, results) {
   } else {
     console.log(results);
 
-    let label = results;
-    textSize(32);
-    text('word', 10, 30);
-    fill(0, 102, 153);
+    let label = "Hello";
+    let prob = "World!";
+    fill(0);
+    textSize(64);
+    text(label, 10, height - 100);
+    createP(label);
+    createP(prob);
     
     classifier.classify(gotResults);
   }
