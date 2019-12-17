@@ -13,13 +13,13 @@ function modelReady() {
   console.log('Model is ready!!!');  
 
   label = 'loading classifier..';
-  // classifier.load('model.json', customModelReady);
+  classifier.load('model.json', customModelReady);
 }
 
 function customModelReady(){
   console.log('Custom Model Set..');  
   label = 'Model ready!';  
-  // classifier.classify(gotResults); 
+  classifier.classify(gotResults); 
 }
 
 function videoReady() {
@@ -27,18 +27,18 @@ function videoReady() {
   console.log('Video is ready!!!');  
 }
 
-function whileTraining(loss){
-  console.log('Training...');
-  label = 'Training...!';
-  console.log(loss);
-  label = loss;
+// function whileTraining(loss){
+//   console.log('Training...');
+//   label = 'Training...!';
+//   console.log(loss);
+//   label = loss;
   
-  if(!loss){
-    label = 'Training Complete!';
-    console.log('Training Complete!');
-    classifier.classify(gotResults);
-  }
-}
+//   if(!loss){
+//     label = 'Training Complete!';
+//     console.log('Training Complete!');
+//     classifier.classify(gotResults);
+//   }
+// }
 
 function gotResults(error, results) {
   if (error) {
@@ -76,24 +76,24 @@ function setup() {
   label = 'initializing classifier...';
   classifier = mobilenet.classification(video, videoReady);   
   
-  sampleButton = createButton('RightWing');
+  sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('RightWing');
+    let res = classifier.addImage('Turbine');
     
-    console.log('RightWing');
+    console.log('Turbine');
     console.log(res);           
 
-    label = 'RightWing';     
+    label = 'Turbine';     
   });
   
-  meButton = createButton('LeftWing');
+  meButton = createButton('Helicopter');
   meButton.mousePressed(function(args){
-    let res = classifier.addImage('LeftWing');
-    console.log('LeftWing!');
+    let res = classifier.addImage('Helicopter');
+    console.log('Helicopter!');
     console.log(res);                
     
 
-    label = 'LeftWing';     
+    label = 'Helicopter';     
   });
   
   trainButton = createButton('TRAIN');
