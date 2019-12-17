@@ -26,6 +26,14 @@ function gotResults(error, results) {
     console.error(error);
   } else {
     console.log(results);
+
+    let label = results;
+    fill(0);
+    textSize(64);
+    text(label, 10, height - 100);
+    fill(0, 102, 153);
+    createP(label);
+    
     classifier.classify(gotResults);
   }
 }
