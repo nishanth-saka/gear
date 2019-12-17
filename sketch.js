@@ -10,39 +10,39 @@ let label = 'loading model...';
 
 function modelReady() {
   console.log('Model is ready!!!');  
-  classifier.load('model.json', customModelReady).then(function(){
-    classifier.classify(gotResults);
-  });
+  classifier.load('model.json', customModelReady);
 }
 
 function customModelReady(){
-  console.log('Custom Model is ready!!!');  
-  label = "Model ready!";  
+  console.log('Custom Model Set..');  
+  label = 'Model ready!';  
+  classifier.classify(gotResults);
 }
 
 function videoReady() {
-  console.log('Video is ready!!!');    
+  console.log('Video is ready!!!');  
 }
 
-// function whileTraining(loss){
-//   console.log('Training...');
-//   label = 'Training...!';
-//   console.log(loss);
-//   label = loss;
+function whileTraining(loss){
+  console.log('Training...');
+  label = 'Training...!';
+  console.log(loss);
+  label = loss;
   
-//   if(!loss){
-//     label = 'Training Complete!';
-//     console.log('Training Complete!');
-//     classifier.classify(gotResults);
-//   }
-// }
+  if(!loss){
+    label = 'Training Complete!';
+    console.log('Training Complete!');
+    classifier.classify(gotResults);
+  }
+}
 
 function gotResults(error, results) {
   if (error) {
     label = error;
     console.error(error);
   } else {
-    label = results;
+    console.log(results);
+    label = results[0].label;
     classifier.classify(gotResults);
   }
 }
