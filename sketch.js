@@ -5,6 +5,8 @@ let sampleButton;
 let trainButton;
 let saveButton;
 let meButton;
+let label = '';
+
 
 function modelReady() {
   console.log('Model is ready!!!');  
@@ -15,6 +17,9 @@ function videoReady() {
 }
 
 function whileTraining(loss){
+  console.log('Training...');
+  console.log(loss);
+  
   if(!loss){
     console.log('Training Complete!');
     classifier.classify(gotResults);
@@ -25,16 +30,7 @@ function gotResults(error, results) {
   if (error) {
     console.error(error);
   } else {
-    console.log(results);
-
-    let label = "Hello";
-    let prob = "World!";
-    fill(0);
-    textSize(64);
-    text(label, 10, height - 100);
-    createP(label);
-    createP(prob);
-    
+    label = results;
     classifier.classify(gotResults);
   }
 }
@@ -42,13 +38,14 @@ function gotResults(error, results) {
 
 function setup() {
   
-  video = createCapture({
+  var constraints = {
     audio: false,
     video: {
       facingMode: "user"
     }
-  });
-
+  };
+  
+  video = createCapture(constraints);
   video.hide();
   
   createCanvas(640, 480);
@@ -57,20 +54,29 @@ function setup() {
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
   
-  
   sampleButton = createButton('pen');
   sampleButton.mousePressed(function(args){
-    classifier.addImage('pen');
+    let res = classifier.addImage('pen');
+    
+    console.log('PEN');
+    console.log(res);                
   });
   
   meButton = createButton('me');
   meButton.mousePressed(function(args){
-    classifier.addImage('me');
+    let res = classifier.addImage('me');
+    console.log('Me!');
+    console.log(res);                
+    
   });
   
   trainButton = createButton('TRAIN');
   trainButton.mousePressed(function(){
-    classifier.train(whileTraining);
+    console.log('Training Begins');
+    let res = classifier.train(whileTraining);
+    
+    console.log('TRAIN');
+    console.log(res);   
   });
   
   saveButton = createButton('Save');
@@ -81,4 +87,7 @@ function setup() {
 
 function draw() {
   image(video, 0, 0);
+  fill(255);
+  textSize(32);
+  text(label, 10, height - 20);
 }
