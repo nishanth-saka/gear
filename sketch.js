@@ -9,38 +9,32 @@ let label = 'loading model...';
 
 
 function modelReady() {
-  label = 'modelReady..';
   console.log('Model is ready!!!');  
-
-  label = 'loading classifier..';
-  classifier.load('model.json', customModelReady).then((res) => {
-    label = res;
-  });
+  classifier.load('model.json', customModelReady);
 }
 
 function customModelReady(){
   console.log('Custom Model Set..');  
   label = 'Model ready!';  
-  classifier.classify(gotResults); 
+  classifier.classify(gotResults);
 }
 
 function videoReady() {
-  label = 'videoReady..';  
   console.log('Video is ready!!!');  
 }
 
-// function whileTraining(loss){
-//   console.log('Training...');
-//   label = 'Training...!';
-//   console.log(loss);
-//   label = loss;
+function whileTraining(loss){
+  console.log('Training...');
+  label = 'Training...!';
+  console.log(loss);
+  label = loss;
   
-//   if(!loss){
-//     label = 'Training Complete!';
-//     console.log('Training Complete!');
-//     classifier.classify(gotResults);
-//   }
-// }
+  if(!loss){
+    label = 'Training Complete!';
+    console.log('Training Complete!');
+    classifier.classify(gotResults);
+  }
+}
 
 function gotResults(error, results) {
   if (error) {
@@ -60,9 +54,6 @@ function setup() {
     audio: false,
     video: {
       facingMode: "user"
-      // facingMode: {
-      //   exact: "environment"
-      // }
     }
   };
   
@@ -72,30 +63,27 @@ function setup() {
   createCanvas(640, 480);
   background(200);  
   
-  label = 'initializing mobilenet...';
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-
-  label = 'initializing classifier...';
   classifier = mobilenet.classification(video, videoReady);   
   
-  sampleButton = createButton('Turbine');
+  sampleButton = createButton('pen');
   sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('Turbine');
+    let res = classifier.addImage('pen');
     
-    console.log('Turbine');
+    console.log('PEN');
     console.log(res);           
 
-    label = 'Turbine';     
+    label = 'PEN';     
   });
   
-  meButton = createButton('Helicopter');
+  meButton = createButton('me');
   meButton.mousePressed(function(args){
-    let res = classifier.addImage('Helicopter');
-    console.log('Helicopter!');
+    let res = classifier.addImage('me');
+    console.log('Me!');
     console.log(res);                
     
 
-    label = 'Helicopter';     
+    label = 'Me';     
   });
   
   trainButton = createButton('TRAIN');
@@ -111,11 +99,11 @@ function setup() {
         
   });
   
-  saveButton = createButton('Save');
+  saveButton = createButton('Reset');
   saveButton.mousePressed(function(){
-    classifier.save();
-
-    label = 'Save';    
+    // classifier.save();
+    classifier = mobilenet.classification(video, videoReady);   
+    label = 'Reset';    
   });
 }
 
