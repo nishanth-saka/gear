@@ -13,7 +13,9 @@ function modelReady() {
   console.log('Model is ready!!!');  
 
   label = 'loading classifier..';
-  classifier.load('model.json', customModelReady);
+  classifier.load('model.json', customModelReady).then((res) => {
+    label = res;
+  });
 }
 
 function customModelReady(){
