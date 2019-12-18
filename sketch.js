@@ -119,26 +119,24 @@ function setup() {
   // classifier = mobilenet.classification(video, videoReady);   
   // // //label = 'mobilenet READY..';
   
-  // sampleButton = createButton('Turbine');
-  // sampleButton.mousePressed(function(args){
-  //    classifier.addImage('Turbine');   
-  //    console.log('Turbine...');
-  //   //label = 'Turbine';     
-  // });
+  sampleButton = createButton('Turbine');
+  sampleButton.mousePressed(function(args){
+     classifier.addImage('Turbine');   
+     console.log('Turbine...');
+    //label = 'Turbine';     
+  });
   
-  // meButton = createButton('Helicopter');
-  // meButton.mousePressed(function(args){
-  //   classifier.addImage('Helicopter');        
-  //   console.log('Helicopter...');  
-  // });
+  meButton = createButton('Helicopter');
+  meButton.mousePressed(function(args){
+    classifier.addImage('Helicopter');        
+    console.log('Helicopter...');  
+  });
   
-  // trainButton = createButton('TRAIN');
-  // trainButton.mousePressed(function(){
-  //   console.log('Training Begins...');
-  //   classifier.train(whileTraining);
-    
-        
-  // });
+  trainButton = createButton('TRAIN');
+  trainButton.mousePressed(function(){
+    console.log('Training Begins...');
+    classifier.train(whileTraining);
+  });
   
   // saveButton = createButton('Check');
   // saveButton.mousePressed(function(){
