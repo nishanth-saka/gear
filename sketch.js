@@ -21,6 +21,14 @@ function modelReady() {
 
 function videoReady() {
   console.log('Video is ready!!!');  
+  classifier.addImage(video, 'Helicopter')
+   .then(function (obj) { 
+      console.log('Success, You are a GEEK');       
+  })
+  .catch(function (err) { 
+      console.log('Some error has occured'); 
+      console.log(err);
+  }); ;        
 }
 
 function whileTraining(loss){
@@ -69,12 +77,9 @@ function setup() {
   video = createCapture(VIDEO);
   video.hide();
 
-  console.log('Initializing classifier...');
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
-  console.log('Classifier ready...');
-
-  classifier.addImage('Helicopter');        
+  
   
   
   // video = createCapture(constraints, function(stream) {
