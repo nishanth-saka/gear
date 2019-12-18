@@ -71,11 +71,12 @@ function setup() {
   console.log('capturing video..');
 
   video = createCapture(constraints, function(stream) {
-    console.log(stream);
-    return stream;
+    console.log(stream);    
   });
 
-  
+  console.log(video);
+
+
 
   
   
