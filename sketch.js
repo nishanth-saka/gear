@@ -66,8 +66,9 @@ function setup() {
     audio: false
   };
 
-  video = createCapture(constraints);
+  video = createCapture(VIDEO);
   video.hide();
+  classifier.addImage('Helicopter');        
   
   // createCanvas(480, 120);
   
