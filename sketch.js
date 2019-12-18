@@ -86,16 +86,10 @@ function setup() {
 
       classifier = mobilenet.classification(video, function(){
           video.hide();
-
-          console.log('adding video to DOM..');
-
-          image(video, 0, 0, 320, 240);
-
           console.log('all set!');          
       });       
     });
 
-    console.log(video);
   });
 
   
@@ -158,6 +152,8 @@ function setup() {
 }
 
 function draw() {
+  image(video, 0, 0, 320, 240);
+  
   // background(0);
   // image(video, 0, 0, 320, 240);
   // fill(255);
