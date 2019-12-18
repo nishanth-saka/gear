@@ -141,20 +141,20 @@ function setup() {
     classifier.train(whileTraining);
   });
   
-  // saveButton = createButton('Check');
-  // saveButton.mousePressed(function(){
-  //   // classifier.save();
-  //   classifier.classify(video)
-  //   .then(function (obj) { 
-  //       console.log('Success, You are a GEEK'); 
-  //       console.log(obj[0].label);
-  //   })
-  //   .catch(function (err) { 
-  //       console.log('Some error has occured'); 
-  //       console.log(err);
-  //   }); ;
-  // //   label = 'Reset';    
-  // });
+  saveButton = createButton('Check');
+  saveButton.mousePressed(function(){
+    // classifier.save();
+    classifier.classify(video)
+    .then(function (obj) { 
+        console.log('Success, You are a GEEK'); 
+        console.log(obj[0].label);
+    })
+    .catch(function (err) { 
+        console.log('Some error has occured'); 
+        console.log(err);
+    }); ;
+  //   label = 'Reset';    
+  });
 }
 
 function draw() {
