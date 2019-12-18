@@ -79,7 +79,7 @@ function setup() {
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    classifier.addImage(video, 'Turbine', addedImage);    
+    classifier.addImage('Turbine');    
 
     //label = 'Turbine';     
   });
