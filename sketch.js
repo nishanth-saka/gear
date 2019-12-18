@@ -45,6 +45,8 @@ function gotResults(error, results) {
 
     classifier.classify(video).then(function () { 
         console.log('Success, You are a GEEK'); 
+        classifier.classify(video, gotResults);
+
     })
     .catch(function (err) { 
         console.log('Some error has occured'); 
