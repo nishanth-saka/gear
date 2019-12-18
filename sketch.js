@@ -22,8 +22,14 @@ function modelReady() {
 function videoReady() {
   console.log('Video is ready!!!');  
   console.log('Adding Image...');  
-  classifier.addImage('Turbine');   
-  console.log('Image ready...');       
+  classifier.addImage(video,'Turbine')
+    .then(function (obj) { 
+        console.log('Image ready...');               
+    })
+    .catch(function (err) { 
+        console.log('Some error has occured'); 
+        console.log(err);
+    });  
 }
 
 function whileTraining(loss){
