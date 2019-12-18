@@ -5,7 +5,7 @@ let sampleButton;
 let trainButton;
 let saveButton;
 let meButton;
-let label = 'loading model...';
+let label = '';
 
 
 function modelReady() {
@@ -60,8 +60,11 @@ function setup() {
       facingMode: "user"
     }
   };
-  
+
+
+  label = 'creating VIDEO element..';
   video = createCapture(constraints);
+  label = 'VIDEO element READY..';
   video.hide();
   
   createCanvas(640, 480);
