@@ -8,45 +8,45 @@ let meButton;
 let label = '';
 
 
-function modelReady() {
-  console.log('Model is ready!!!');  
-  // classifier.load('model.json', customModelReady);
-  label = 'Model Ready!';
-}
+// function modelReady() {
+//   console.log('Model is ready!!!');  
+//   // classifier.load('model.json', customModelReady);
+//   label = 'Model Ready!';
+// }
 
-function customModelReady(){
-  console.log('Custom Model Set..');  
-  label = 'Model ready!';  
-  classifier.classify(gotResults);
-}
+// function customModelReady(){
+//   console.log('Custom Model Set..');  
+//   label = 'Model ready!';  
+//   classifier.classify(gotResults);
+// }
 
-function videoReady() {
-  console.log('Video is ready!!!');  
-}
+// function videoReady() {
+//   console.log('Video is ready!!!');  
+// }
 
-function whileTraining(loss){
-  console.log('Training...');
-  label = 'Training...!';
-  console.log(loss);
-  label = loss;
+// function whileTraining(loss){
+//   console.log('Training...');
+//   label = 'Training...!';
+//   console.log(loss);
+//   label = loss;
   
-  if(!loss){
-    label = 'Training Complete!';
-    console.log('Training Complete!');
-    classifier.classify(gotResults);
-  }
-}
+//   if(!loss){
+//     label = 'Training Complete!';
+//     console.log('Training Complete!');
+//     classifier.classify(gotResults);
+//   }
+// }
 
-function gotResults(error, results) {
-  if (error) {
-    label = error;
-    console.error(error);
-  } else {
-    console.log(results);
-    label = results[0].label;
-    classifier.classify(gotResults);
-  }
-}
+// function gotResults(error, results) {
+//   if (error) {
+//     label = error;
+//     console.error(error);
+//   } else {
+//     console.log(results);
+//     label = results[0].label;
+//     classifier.classify(gotResults);
+//   }
+// }
 
 
 function setup() {
@@ -73,45 +73,45 @@ function setup() {
   // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   // classifier = mobilenet.classification(video, videoReady);   
   
-  sampleButton = createButton('Turbine');
-  sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('Turbine');
+  // sampleButton = createButton('Turbine');
+  // sampleButton.mousePressed(function(args){
+  //   let res = classifier.addImage('Turbine');
     
-    console.log('Turbine');
-    console.log(res);           
+  //   console.log('Turbine');
+  //   console.log(res);           
 
-    label = 'Turbine';     
-  });
+  //   label = 'Turbine';     
+  // });
   
-  meButton = createButton('Helicopter');
-  meButton.mousePressed(function(args){
-    let res = classifier.addImage('Helicopter');
-    console.log('Helicopter!');
-    console.log(res);                
+  // meButton = createButton('Helicopter');
+  // meButton.mousePressed(function(args){
+  //   let res = classifier.addImage('Helicopter');
+  //   console.log('Helicopter!');
+  //   console.log(res);                
     
 
-    label = 'Helicopter';     
-  });
+  //   label = 'Helicopter';     
+  // });
   
-  trainButton = createButton('TRAIN');
-  trainButton.mousePressed(function(){
-    console.log('Training Begins');
-    classifier.train(whileTraining).then(function(res){
-      console.log('TRAIN');
-      console.log(res);   
+  // trainButton = createButton('TRAIN');
+  // trainButton.mousePressed(function(){
+  //   console.log('Training Begins');
+  //   classifier.train(whileTraining).then(function(res){
+  //     console.log('TRAIN');
+  //     console.log(res);   
 
-      label = 'TRAIN';
-    });
+  //     label = 'TRAIN';
+  //   });
     
         
-  });
+  // });
   
-  saveButton = createButton('Reset');
-  saveButton.mousePressed(function(){
-    // classifier.save();
-    classifier = mobilenet.classification(video, videoReady);   
-    label = 'Reset';    
-  });
+  // saveButton = createButton('Reset');
+  // saveButton.mousePressed(function(){
+  //   // classifier.save();
+  //   classifier = mobilenet.classification(video, videoReady);   
+  //   label = 'Reset';    
+  // });
 }
 
 function draw() {
