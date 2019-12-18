@@ -20,15 +20,7 @@ function modelReady() {
 // }
 
 function videoReady() {
-  console.log('Video is ready!!!');  
-  classifier.addImage(video, 'Helicopter')
-  .then(function (obj) { 
-      console.log('Success, You are a GEEK');       
-  })
-  .catch(function (err) { 
-      console.log('Some error has occured'); 
-      console.log(err);
-  }); ;        
+  console.log('Video is ready!!!');      
 }
 
 function whileTraining(loss){
