@@ -23,18 +23,18 @@ function videoReady() {
   console.log('Video is ready!!!');  
 }
 
-// function whileTraining(loss){
-//   console.log('Training...');
-//   label = 'Training...!';
-//   console.log(loss);
-//   label = loss;
+function whileTraining(loss){
+  console.log('Training...');
+  label = 'Training...!';
+  console.log(loss);
+  label = loss;
   
-//   if(!loss){
-//     label = 'Training Complete!';
-//     console.log('Training Complete!');
-//     classifier.classify(gotResults);
-//   }
-// }
+  if(!loss){
+    label = 'Training Complete!';
+    console.log('Training Complete!');
+    classifier.classify(gotResults);
+  }
+}
 
 // function gotResults(error, results) {
 //   if (error) {
