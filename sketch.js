@@ -77,20 +77,20 @@ function setup() {
   };
 
   mobilenet = ml5.featureExtractor('MobileNet', function(){
-    
-    console.log('capturing video..');
 
-    video = createCapture(constraints, function(stream) {
-    
-      console.log('creating classifier..');
-
-      classifier = mobilenet.classification(video, function(){
-          video.hide();
-          console.log('all set!');          
-      });       
-    });
+  });
 
 
+  console.log('capturing video..');
+
+  video = createCapture(constraints, function(stream) {
+  
+    console.log('creating classifier..');
+
+    classifier = mobilenet.classification(video, function(){
+        video.hide();
+        console.log('all set!');          
+    });       
   });
 
   
@@ -153,9 +153,8 @@ function setup() {
 }
 
 function draw() {
-  if(video){
-    image(video, 0, 0, 320, 240);
-  }
+  image(video, 0, 0, 320, 240);
+  
   // background(0);
   // image(video, 0, 0, 320, 240);
   // fill(255);
