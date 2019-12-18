@@ -66,8 +66,8 @@ function setup() {
   createCanvas(640, 480);
   background(200);  
   
-  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  classifier = mobilenet.classification(video, videoReady);   
+  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  // classifier = mobilenet.classification(video, videoReady);   
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
