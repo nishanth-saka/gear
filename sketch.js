@@ -22,7 +22,7 @@ function modelReady() {
 function videoReady() {
   console.log('Video is ready!!!');  
   classifier.addImage(video, 'Helicopter')
-   .then(function (obj) { 
+  .then(function (obj) { 
       console.log('Success, You are a GEEK');       
   })
   .catch(function (err) { 
@@ -142,5 +142,12 @@ function draw() {
   // textSize(16);
   // text(label, 10, height - 10);
 
-  image(video, 0, 0, width, width * video.height / video.width);  
+  image(video, 0, 0, width, width * video.height / video.width)
+  .then(function (obj) { 
+      console.log('Success, You are a GEEK');       
+  })
+  .catch(function (err) { 
+      console.log('Some error has occured'); 
+      console.log(err);
+  }); 
 }
