@@ -118,7 +118,7 @@ function setup() {
 }
 
 function draw() {
-  image(video, 0, 0);
+  // image(video, 0, 0);
   fill(255);
   textSize(32);
   text(label, 10, height - 20);
