@@ -20,7 +20,8 @@ function modelReady() {
 // }
 
 function videoReady() {
-  console.log('Video is ready!!!');      
+  console.log('Video is ready!!!');     
+  classifier.addImage('Turbine');    
 }
 
 function whileTraining(loss){
