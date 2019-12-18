@@ -115,7 +115,7 @@ function setup() {
     classifier.classify(video)
     .then(function (obj) { 
         console.log('Success, You are a GEEK'); 
-        console.log(obj);
+        console.log(obj[0].label);
     })
     .catch(function (err) { 
         console.log('Some error has occured'); 
