@@ -8,10 +8,10 @@ let meButton;
 let label = '';
 
 
-function modelReady() {
-  console.log('Model is ready!!!');  
-  // classifier.load('model.json', customModelReady);  
-}
+// function modelReady() {
+//   console.log('Model is ready!!!');  
+//   // classifier.load('model.json', customModelReady);  
+// }
 
 // function customModelReady(){
 //   console.log('Custom Model Set..');  
@@ -19,20 +19,19 @@ function modelReady() {
 //   classifier.classify(gotResults);
 // }
 
-function videoReady() {
-  console.log('Video is ready!!!');  
-  console.log('Adding Image...');  
-  video.hide();
-  image(video, 0, 0, 320, 240);
-  // classifier.addImage(video,'Turbine')
-  //   .then(function (obj) { 
-  //       console.log('Image ready...');               
-  //   })
-  //   .catch(function (err) { 
-  //       console.log('Some error has occured'); 
-  //       console.log(err);
-  //   });  
-}
+// function videoReady() {
+//   console.log('Video is ready!!!');  
+//   console.log('Adding Image...');  
+  
+//   // classifier.addImage(video,'Turbine')
+//   //   .then(function (obj) { 
+//   //       console.log('Image ready...');               
+//   //   })
+//   //   .catch(function (err) { 
+//   //       console.log('Some error has occured'); 
+//   //       console.log(err);
+//   //   });  
+// }
 
 function whileTraining(loss){
   console.log('Training...');
@@ -77,16 +76,29 @@ function setup() {
     audio: false
   };
 
-  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  mobilenet = ml5.featureExtractor('MobileNet', function(){
+    
+    console.log('capturing video..');
 
-  console.log('capturing video..');
+    video = createCapture(constraints, function(stream) {
+    
+      console.log('creating classifier..');
 
-  video = createCapture(constraints, function(stream) {
-    console.log(stream);    
-    classifier = mobilenet.classification(video, videoReady);       
+      classifier = mobilenet.classification(video, function(){
+          video.hide();
+
+          console.log('adding video to DOM..');
+
+          image(video, 0, 0, 320, 240);
+
+          console.log('all set!');          
+      });       
+    });
+
+    console.log(video);
   });
 
-  console.log(video);
+  
 
 
 
