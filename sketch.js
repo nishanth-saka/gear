@@ -5,7 +5,7 @@ let sampleButton;
 let trainButton;
 let saveButton;
 let meButton;
-//let label = '';
+let label = '';
 
 
 function modelReady() {
@@ -35,12 +35,14 @@ function whileTraining(loss){
 }
 
 function gotResults(error, results) {
+  console.log('gotResults..');
   if (error) {
     //label = error;
     console.error(error);
   } else {
     console.log(results);
-    //label = results[0].label;
+    label = results[0].label;
+
     classifier.classify(video).then(function () { 
         console.log('Success, You are a GEEK'); 
     })
