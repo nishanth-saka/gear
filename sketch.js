@@ -54,20 +54,23 @@ function addedImage(res, err) {
 function setup() {
 
   createCanvas(480, 480);
-  video = createCapture(VIDEO);
+  
+  let constraints = {
+    video: {
+      mandatory: {
+        minWidth: 1280,
+        minHeight: 720
+      },
+      optional: [{ maxFrameRate: 10 }]
+    },
+    audio: false
+  };
+
+  video = createCapture(constraints);
   video.hide();
   
   // createCanvas(480, 120);
-  // let constraints = {
-  //   video: {
-  //     mandatory: {
-  //       minWidth: 1280,
-  //       minHeight: 720
-  //     },
-  //     optional: [{ maxFrameRate: 10 }]
-  //   },
-  //   audio: false
-  // };
+  
   
   // video = createCapture(constraints, function(stream) {
   //   console.log(stream);
@@ -136,6 +139,5 @@ function draw() {
   // textSize(16);
   // text(label, 10, height - 10);
 
-  image(video, 0, 0, width, width * video.height / video.width);
-  filter(INVERT);
+  image(video, 0, 0, width, width * video.height / video.width);  
 }
