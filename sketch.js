@@ -22,14 +22,15 @@ function modelReady() {
 function videoReady() {
   console.log('Video is ready!!!');  
   console.log('Adding Image...');  
-  classifier.addImage(video,'Turbine')
-    .then(function (obj) { 
-        console.log('Image ready...');               
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    });  
+  image(video, 0, 0, 320, 240);
+  // classifier.addImage(video,'Turbine')
+  //   .then(function (obj) { 
+  //       console.log('Image ready...');               
+  //   })
+  //   .catch(function (err) { 
+  //       console.log('Some error has occured'); 
+  //       console.log(err);
+  //   });  
 }
 
 function whileTraining(loss){
