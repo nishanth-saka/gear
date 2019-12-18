@@ -62,9 +62,9 @@ function setup() {
   };
 
 
-  label = 'creating VIDEO element..';
+  label = 'Initializing video..';
   video = createCapture(constraints);
-  label = 'VIDEO element READY..';
+  label = 'VIDEO READY..';
   video.hide();
   
   createCanvas(640, 480);
