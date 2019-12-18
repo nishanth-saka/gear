@@ -69,10 +69,11 @@ function setup() {
   video = createCapture(VIDEO);
   video.hide();
 
+  console.log('Initializing classifier...');
   classifier = mobilenet.classification(video, videoReady);   
-  classifier.addImage('Helicopter');        
-  
-  // createCanvas(480, 120);
+  console.log('Classifier ready...');
+
+  //classifier.addImage('Helicopter');        
   
   
   // video = createCapture(constraints, function(stream) {
