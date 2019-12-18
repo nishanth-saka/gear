@@ -62,7 +62,7 @@ function setup() {
   label = 'Initializing video..';
   video = createCapture(constraints);
   label = 'VIDEO READY..';
-  video.hide();
+  // video.hide();
   
   createCanvas(640, 480);
   background(200);  
@@ -119,7 +119,7 @@ function draw() {
   console.log(video);
   
   background(0);
-  image(video, 0, 0);
+  // image(video, 0, 0);
   fill(255);
   textSize(32);
   text(label, 10, height - 20);
