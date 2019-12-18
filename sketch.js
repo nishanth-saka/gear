@@ -75,11 +75,11 @@ function setup() {
   };
 
   video = createCapture(VIDEO);
-  video.hide();
+  // video.hide();
 
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
-  
+  classifier.addImage('Turbine');   
   
   
   // video = createCapture(constraints, function(stream) {
@@ -142,12 +142,12 @@ function draw() {
   // textSize(16);
   // text(label, 10, height - 10);
 
-  image(video, 0, 0, width, width * video.height / video.width)
-  .then(function (obj) { 
-      console.log('Success, You are a GEEK');       
-  })
-  .catch(function (err) { 
-      console.log('Some error has occured'); 
-      console.log(err);
-  }); 
+  // image(video, 0, 0, width, width * video.height / video.width)
+  // .then(function (obj) { 
+  //     console.log('Success, You are a GEEK');       
+  // })
+  // .catch(function (err) { 
+  //     console.log('Some error has occured'); 
+  //     console.log(err);
+  // }); 
 }
