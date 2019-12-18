@@ -40,9 +40,7 @@ function gotResults(error, results) {
     //label = error;
     console.error(error);
   } else {
-    console.log(results[0].label);
-    label = results[0].label;
-
+    label = result;
     classifier.classify(gotResults);
   }
 }
