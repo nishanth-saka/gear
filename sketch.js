@@ -22,6 +22,7 @@ function modelReady() {
 function videoReady() {
   console.log('Video is ready!!!');  
   console.log('Adding Image...');  
+  video.hide();
   image(video, 0, 0, 320, 240);
   // classifier.addImage(video,'Turbine')
   //   .then(function (obj) { 
