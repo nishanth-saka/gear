@@ -66,17 +66,18 @@ function setup() {
     audio: false
   };
 
-  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
 
   console.log('capturing video..');
-  video = createCapture(VIDEO)
-  .then(function(){
-    console.log('video ready..');
-    classifier = mobilenet.classification(video, videoReady);   
-    classifier.addImage('Turbine'); 
-  });
-  // video.hide();
 
+  video = createCapture(constraints, function(stream) {
+    console.log(stream);
+    return stream;
+  });
+
+  
+
+  
   
   
 
