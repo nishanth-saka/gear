@@ -68,24 +68,24 @@ function setup() {
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
   
-  sampleButton = createButton('pen');
+  sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('pen');
+    let res = classifier.addImage('Turbine');
     
-    console.log('PEN');
+    console.log('Turbine');
     console.log(res);           
 
-    label = 'PEN';     
+    label = 'Turbine';     
   });
   
-  meButton = createButton('me');
+  meButton = createButton('Helicopter');
   meButton.mousePressed(function(args){
-    let res = classifier.addImage('me');
-    console.log('Me!');
+    let res = classifier.addImage('Helicopter');
+    console.log('Helicopter!');
     console.log(res);                
     
 
-    label = 'Me';     
+    label = 'Helicopter';     
   });
   
   trainButton = createButton('TRAIN');
