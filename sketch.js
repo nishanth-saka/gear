@@ -98,10 +98,7 @@ function setup() {
 
   video.elt.setAttribute('playsinline', '');
   video.hide();
-  video.size(w, h);
-  video = createCanvas(w, h);
   
-
 
 
   
