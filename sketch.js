@@ -115,6 +115,9 @@ function setup() {
 }
 
 function draw() {
+  console.log('Video: ');
+  console.log(video);
+  
   background(0);
   image(video, 0, 0);
   fill(255);
