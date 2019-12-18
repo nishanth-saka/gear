@@ -40,18 +40,10 @@ function gotResults(error, results) {
     //label = error;
     console.error(error);
   } else {
-    console.log(results);
+    console.log(results[0].label);
     label = results[0].label;
 
-    classifier.classify(video).then(function () { 
-        console.log('Success, You are a GEEK'); 
-        classifier.classify(video, gotResults);
-
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); ;
+    classifier.classify(video, gotResults);
   }
 }
 
