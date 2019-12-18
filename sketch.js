@@ -20,9 +20,9 @@ function modelReady() {
 //   classifier.classify(gotResults);
 // }
 
-// function videoReady() {
-//   console.log('Video is ready!!!');  
-// }
+function videoReady() {
+  console.log('Video is ready!!!');  
+}
 
 // function whileTraining(loss){
 //   console.log('Training...');
@@ -67,11 +67,13 @@ function setup() {
   createCanvas(640, 480);
   background(200);  
   
-  label = 'Initializing video..';
+  label = 'Initializing ml5..';
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  label = 'mobilenet READY..';
+  label = 'ml5 READY..';
 
-  // classifier = mobilenet.classification(video, videoReady);   
+  label = 'Initializing mobilenet..';
+  classifier = mobilenet.classification(video, videoReady);   
+  label = 'mobilenet READY..';
   
   // sampleButton = createButton('Turbine');
   // sampleButton.mousePressed(function(args){
@@ -117,8 +119,7 @@ function setup() {
 function draw() {
   console.log('Video: ');
   console.log(video);
-  
-  background(0);
+
   // image(video, 0, 0);
   fill(255);
   textSize(32);
