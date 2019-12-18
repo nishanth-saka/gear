@@ -47,6 +47,11 @@ function whileTraining(loss){
 //   }
 // }
 
+function addedImage(res, err) {
+  console.log('addedImage');
+  console.log(res);
+  console.log(err);
+}
 
 function setup() {
   
@@ -76,14 +81,7 @@ function setup() {
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    classifier.addImage('Turbine')
-    .then(function () { 
-        console.log('Success, You are a GEEK'); 
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); 
+    classifier.addImage(video, 'Turbine', addedImage);    
 
     label = 'Turbine';     
   });
@@ -98,20 +96,20 @@ function setup() {
   //   label = 'Helicopter';     
   // });
   
-  trainButton = createButton('TRAIN');
-  trainButton.mousePressed(function(){
-    console.log('Training Begins...');
-    classifier.train(whileTraining)
-    .then(function () { 
-        console.log('Success, You are a GEEK'); 
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); 
+  // trainButton = createButton('TRAIN');
+  // trainButton.mousePressed(function(){
+  //   console.log('Training Begins...');
+  //   classifier.train(whileTraining)
+  //   .then(function () { 
+  //       console.log('Success, You are a GEEK'); 
+  //   })
+  //   .catch(function (err) { 
+  //       console.log('Some error has occured'); 
+  //       console.log(err);
+  //   }); 
     
         
-  });
+  // });
   
   // saveButton = createButton('Reset');
   // saveButton.mousePressed(function(){
