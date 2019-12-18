@@ -7,6 +7,9 @@ let saveButton;
 let meButton;
 let label = '';
 
+var w = 640;
+var h = 480;
+
 
 // function modelReady() {
 //   console.log('Model is ready!!!');  
@@ -93,6 +96,10 @@ function setup() {
     });       
   });
 
+  video.elt.setAttribute('playsinline', '');
+  video.hide();
+  video.size(w, h);
+  video = createCanvas(w, h);
   
 
 
@@ -154,7 +161,7 @@ function setup() {
 
 function draw() {
   image(video, 0, 0, 320, 240);
-  
+
   // background(0);
   // image(video, 0, 0, 320, 240);
   // fill(255);
