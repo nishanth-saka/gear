@@ -68,6 +68,8 @@ function setup() {
 
   video = createCapture(VIDEO);
   video.hide();
+
+  classifier = mobilenet.classification(video, videoReady);   
   classifier.addImage('Helicopter');        
   
   // createCanvas(480, 120);
