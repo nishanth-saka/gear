@@ -1,43 +1,37 @@
-let mobilenet;
-let video;
-let classifier;
-let sampleButton;
-let trainButton;
-let saveButton;
-let meButton;
-let label = '';
+// Daniel Shiffman
+// http://youtube.com/thecodingtrain
+// http://codingtra.in
 
+// Transfer Learning Feature Extractor Classification with ml5
+// https://youtu.be/eeO-rWYFuG0
+
+let mobilenet;
+let classifier;
+let video;
+let label = 'test';
+let ukeButton;
+let whistleButton;
+let trainButton;
 
 function modelReady() {
-  console.log('Model is ready!!!');  
-  // classifier.load('model.json', customModelReady);  
+  console.log('Model is ready!!!');
 }
-
-// function customModelReady(){
-//   console.log('Custom Model Set..');  
-////   label = 'Model ready!';  
-//   classifier.classify(gotResults);
-// }
 
 function videoReady() {
-  console.log('Video is ready!!!');  
+  console.log('Video is ready!!!');
 }
 
-function whileTraining(loss){
-  console.log('Training...');
-  console.log(loss);
-  
-  if(!loss){
-    //label = 'Training Complete!';
-    console.log('Training Complete!');
+function whileTraining(loss) {
+  if (loss == null) {
+    console.log('Training Complete');
     classifier.classify(gotResults);
+  } else {
+    console.log(loss);
   }
 }
 
-function gotResults(error, results) {
-  console.log('gotResults..');
+function gotResults(error, result) {
   if (error) {
-    //label = error;
     console.error(error);
   } else {
     label = result;
@@ -45,75 +39,34 @@ function gotResults(error, results) {
   }
 }
 
-function addedImage(res, err) {
-  console.log('addedImage');
-  console.log(res);
-  console.log(err);
-}
-
 function setup() {
-  
-  var constraints = {
-    audio: false,
-    video: {
-      facingMode: "user"
-    }
-  };
-
-
-//  label = 'Initializing video..';
-  video = createCapture(constraints);
-  //label = 'VIDEO READY..';
-  // video.hide();
-  
-  createCanvas(640, 480);
-  background(200);  
-  
-  //label = 'Initializing ml5..';
+  createCanvas(320, 270);
+  video = createCapture(VIDEO);
+  video.hide();
+  background(0);
   mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  //label = 'ml5 READY..';
+  classifier = mobilenet.classification(video, videoReady);
 
-  //label = 'Initializing mobilenet..';
-  classifier = mobilenet.classification(video, videoReady);   
-  //label = 'mobilenet READY..';
-  
-  sampleButton = createButton('Turbine');
-  sampleButton.mousePressed(function(args){
-    classifier.addImage(video, 'Turbine', addedImage);    
+  ukeButton = createButton('happy');
+  ukeButton.mousePressed(function() {
+    classifier.addImage('happy');
+  });
 
-    //label = 'Turbine';     
+  whistleButton = createButton('sad');
+  whistleButton.mousePressed(function() {
+    classifier.addImage('sad');
   });
-  
-  meButton = createButton('Helicopter');
-  meButton.mousePressed(function(args){
-    let res = classifier.addImage(video, 'Turbine', addedImage);        
-    //label = 'Helicopter';     
+
+  trainButton = createButton('train');
+  trainButton.mousePressed(function() {
+    classifier.train(whileTraining);
   });
-  
-  trainButton = createButton('TRAIN');
-  trainButton.mousePressed(function(){
-    console.log('Training Begins...');
-    classifier.train(whileTraining)
-    .then(function () { 
-        console.log('Success, You are a GEEK'); 
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); 
-    
-        
-  });
-  
-  // saveButton = createButton('Reset');
-  // saveButton.mousePressed(function(){
-  //   // classifier.save();
-  //   classifier = mobilenet.classification(video, videoReady);   
-  ////   label = 'Reset';    
-  // });
 }
 
 function draw() {
-  textSize(32);
-  text(label, 10, height - 20);
+  background(0);
+  image(video, 0, 0, 320, 240);
+  fill(255);
+  textSize(16);
+  text(label, 10, height - 10);
 }
