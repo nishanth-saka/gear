@@ -10,8 +10,7 @@ let label = '';
 
 function modelReady() {
   console.log('Model is ready!!!');  
-  // classifier.load('model.json', customModelReady);
-  label = 'Model Ready!';
+  // classifier.load('model.json', customModelReady);  
 }
 
 // function customModelReady(){
@@ -75,15 +74,15 @@ function setup() {
   classifier = mobilenet.classification(video, videoReady);   
   label = 'mobilenet READY..';
   
-  // sampleButton = createButton('Turbine');
-  // sampleButton.mousePressed(function(args){
-  //   let res = classifier.addImage('Turbine');
+  sampleButton = createButton('Turbine');
+  sampleButton.mousePressed(function(args){
+    let res = classifier.addImage('Turbine');
     
-  //   console.log('Turbine');
-  //   console.log(res);           
+    console.log('Turbine');
+    console.log(res);           
 
-  //   label = 'Turbine';     
-  // });
+    label = 'Turbine';     
+  });
   
   // meButton = createButton('Helicopter');
   // meButton.mousePressed(function(args){
