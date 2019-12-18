@@ -25,9 +25,7 @@ function videoReady() {
 
 function whileTraining(loss){
   console.log('Training...');
-  label = 'Training...!';
   console.log(loss);
-  label = loss;
   
   if(!loss){
     label = 'Training Complete!';
@@ -36,16 +34,16 @@ function whileTraining(loss){
   }
 }
 
-// function gotResults(error, results) {
-//   if (error) {
-//     label = error;
-//     console.error(error);
-//   } else {
-//     console.log(results);
-//     label = results[0].label;
-//     classifier.classify(gotResults);
-//   }
-// }
+function gotResults(error, results) {
+  if (error) {
+    label = error;
+    console.error(error);
+  } else {
+    console.log(results);
+    label = results[0].label;
+    classifier.classify(gotResults);
+  }
+}
 
 function addedImage(res, err) {
   console.log('addedImage');
