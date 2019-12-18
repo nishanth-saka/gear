@@ -42,8 +42,9 @@ function whileTraining(loss){
   
   if(!loss){
     //label = 'Training Complete!';
+    label = 'DONE!';     
     console.log('Training Complete!');
-    
+    label = '';     
   }
 }
 
@@ -100,71 +101,59 @@ function setup() {
   video.hide();
   
 
-
-  
-  
-  
-
-
-  // //label = 'VIDEO READY..';
-  // video.hide();
-  
-  // background(200);  
-  
-  //label = 'Initializing ml5..';
-  // 
-  // // //label = 'ml5 READY..';
-
-  // // //label = 'Initializing mobilenet..';
-  // classifier = mobilenet.classification(video, videoReady);   
-  // // //label = 'mobilenet READY..';
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
+    label = 'Training.. Turbine';     
      classifier.addImage(video, 'Turbine', function(){
       console.log('Turbine...'); 
+      label = '';     
      });   
-     
-    //label = 'Turbine';     
+         
   });
   
   meButton = createButton('Helicopter');
   meButton.mousePressed(function(args){
+    label = 'Training.. Helicopter';  
     classifier.addImage(video, 'Helicopter', function(){
       console.log('Helicopter...'); 
+      label = '';     
      });   
   });
   
   trainButton = createButton('TRAIN');
   trainButton.mousePressed(function(){
     console.log('Training Begins...');
+    label = 'Training Begins...';  
     classifier.train(whileTraining);
   });
   
   saveButton = createButton('Check');
   saveButton.mousePressed(function(){
-    // classifier.save();
+    label = '';    // classifier.save( );
     classifier.classify(video)
     .then(function (obj) { 
         console.log('Success, You are a GEEK'); 
         console.log(obj[0].label);
+        label = obj[0].label;
     })
     .catch(function (err) { 
         console.log('Some error has occured'); 
         console.log(err);
+        label = err;   
     }); ;
   //   label = 'Reset';    
   });
 }
 
 function draw() {
-  image(video, 0, 0, 320, 240);
+  image(video, 0, 0, 1024, 480);
 
   // background(0);
   // image(video, 0, 0, 320, 240);
   // fill(255);
-  // textSize(16);
-  // text(label, 10, height - 10);
+  textSize(16);
+  text(label, 10, height - 10);
 
   // image(video, 0, 0, width, width * video.height / video.width)
   // .then(function (obj) { 
