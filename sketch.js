@@ -63,7 +63,7 @@ function setup() {
 
 //  label = 'Initializing video..';
   createCanvas(320, 270);
-  video = createCapture(constraints);
+  video = createCapture(VIDEO);
   //label = 'VIDEO READY..';
   video.hide();
   
