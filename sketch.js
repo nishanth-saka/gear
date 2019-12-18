@@ -8,11 +8,11 @@ let meButton;
 let label = '';
 
 
-// function modelReady() {
-//   console.log('Model is ready!!!');  
-//   // classifier.load('model.json', customModelReady);
-//   label = 'Model Ready!';
-// }
+function modelReady() {
+  console.log('Model is ready!!!');  
+  // classifier.load('model.json', customModelReady);
+  label = 'Model Ready!';
+}
 
 // function customModelReady(){
 //   console.log('Custom Model Set..');  
@@ -70,7 +70,10 @@ function setup() {
   createCanvas(640, 480);
   background(200);  
   
-  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  label = 'Initializing video..';
+  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  label = 'mobilenet READY..';
+
   // classifier = mobilenet.classification(video, videoReady);   
   
   // sampleButton = createButton('Turbine');
