@@ -76,11 +76,14 @@ function setup() {
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    let res = classifier.addImage('Turbine');
+    classifier.addImage('Turbine')
+    .then(function () { 
+        console.log('Success, You are a GEEK'); 
+    })
+    .catch(function () { 
+        console.log('Some error has occured'); 
+    }); 
     
-    console.log('Turbine');
-    console.log(res);           
-
     label = 'Turbine';     
   });
   
