@@ -86,30 +86,26 @@ function setup() {
     label = 'Turbine';     
   });
   
-  // meButton = createButton('Helicopter');
-  // meButton.mousePressed(function(args){
-  //   let res = classifier.addImage('Helicopter');
-  //   console.log('Helicopter!');
-  //   console.log(res);                
-    
-
-  //   label = 'Helicopter';     
-  // });
+  meButton = createButton('Helicopter');
+  meButton.mousePressed(function(args){
+    let res = classifier.addImage(video, 'Turbine', addedImage);        
+    label = 'Helicopter';     
+  });
   
-  // trainButton = createButton('TRAIN');
-  // trainButton.mousePressed(function(){
-  //   console.log('Training Begins...');
-  //   classifier.train(whileTraining)
-  //   .then(function () { 
-  //       console.log('Success, You are a GEEK'); 
-  //   })
-  //   .catch(function (err) { 
-  //       console.log('Some error has occured'); 
-  //       console.log(err);
-  //   }); 
+  trainButton = createButton('TRAIN');
+  trainButton.mousePressed(function(){
+    console.log('Training Begins...');
+    classifier.train(whileTraining)
+    .then(function () { 
+        console.log('Success, You are a GEEK'); 
+    })
+    .catch(function (err) { 
+        console.log('Some error has occured'); 
+        console.log(err);
+    }); 
     
         
-  // });
+  });
   
   // saveButton = createButton('Reset');
   // saveButton.mousePressed(function(){
