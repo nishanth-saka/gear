@@ -85,7 +85,7 @@ function setup() {
   // //label = 'ml5 READY..';
 
   // //label = 'Initializing mobilenet..';
-  classifier = mobilenet.classification(?video, videoReady);   
+  classifier = mobilenet.classification(video, videoReady);   
   // //label = 'mobilenet READY..';
   
   sampleButton = createButton('Turbine');
