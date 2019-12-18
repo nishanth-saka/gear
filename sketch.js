@@ -30,7 +30,7 @@ function whileTraining(loss){
   if(!loss){
     //label = 'Training Complete!';
     console.log('Training Complete!');
-    classifier.classify(video, gotResults);
+    classifier.classify(gotResults);
   }
 }
 
@@ -43,7 +43,7 @@ function gotResults(error, results) {
     console.log(results[0].label);
     label = results[0].label;
 
-    classifier.classify(video, gotResults);
+    classifier.classify(gotResults);
   }
 }
 
