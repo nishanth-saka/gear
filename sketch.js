@@ -74,17 +74,21 @@ function setup() {
     audio: false
   };
 
-  video = createCapture(VIDEO);
+  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+
+  console.log('capturing video..');
+  video = createCapture(VIDEO)
+  .then(function(){
+    console.log('video ready..');
+    classifier = mobilenet.classification(video, videoReady);   
+    classifier.addImage('Turbine'); 
+  });
   // video.hide();
 
-  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  classifier = mobilenet.classification(video, videoReady);   
-  classifier.addImage('Turbine');   
   
   
-  // video = createCapture(constraints, function(stream) {
-  //   console.log(stream);
-  // });
+
+
   // //label = 'VIDEO READY..';
   // video.hide();
   
