@@ -90,28 +90,21 @@ function setup() {
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-    classifier.addImage('Turbine');    
-
+     classifier.addImage('Turbine');   
+     console.log('Turbine...');
     //label = 'Turbine';     
   });
   
   meButton = createButton('Helicopter');
   meButton.mousePressed(function(args){
-    let res = classifier.addImage(video, 'Turbine', addedImage);        
-    //label = 'Helicopter';     
+    classifier.addImage('Helicopter');        
+    console.log('Helicopter...');  
   });
   
   trainButton = createButton('TRAIN');
   trainButton.mousePressed(function(){
     console.log('Training Begins...');
-    classifier.train(whileTraining)
-    .then(function () { 
-        console.log('Success, You are a GEEK'); 
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); 
+    classifier.train(whileTraining);
     
         
   });
