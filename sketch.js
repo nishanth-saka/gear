@@ -66,12 +66,13 @@ function setup() {
     audio: false
   };
 
-  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
 
   console.log('capturing video..');
 
   video = createCapture(constraints, function(stream) {
     console.log(stream);    
+    mobilenet.classification(video, videoReady);   
   });
 
   console.log(video);
