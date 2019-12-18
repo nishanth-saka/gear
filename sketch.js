@@ -121,15 +121,18 @@ function setup() {
   
   sampleButton = createButton('Turbine');
   sampleButton.mousePressed(function(args){
-     classifier.addImage('Turbine');   
-     console.log('Turbine...');
+     classifier.addImage(video, 'Turbine', function(){
+      console.log('Turbine...'); 
+     });   
+     
     //label = 'Turbine';     
   });
   
   meButton = createButton('Helicopter');
   meButton.mousePressed(function(args){
-    classifier.addImage('Helicopter');        
-    console.log('Helicopter...');  
+    classifier.addImage(video, 'Helicopter', function(){
+      console.log('Helicopter...'); 
+     });   
   });
   
   trainButton = createButton('TRAIN');
