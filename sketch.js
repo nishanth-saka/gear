@@ -53,17 +53,21 @@ function addedImage(res, err) {
 
 function setup() {
   
-  var constraints = {
-    audio: false,
+  createCanvas(480, 120);
+  let constraints = {
     video: {
-      facingMode: "user"
-    }
+      mandatory: {
+        minWidth: 1280,
+        minHeight: 720
+      },
+      optional: [{ maxFrameRate: 10 }]
+    },
+    audio: true
   };
-
-
-//  label = 'Initializing video..';
-  createCanvas(320, 270);
-  video = createCapture(VIDEO);
+  
+  video = createCapture(constraints, function(stream) {
+    console.log(stream);
+  });
   //label = 'VIDEO READY..';
   video.hide();
   
