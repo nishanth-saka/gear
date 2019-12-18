@@ -10,7 +10,7 @@ let label = 'loading model...';
 
 function modelReady() {
   console.log('Model is ready!!!');  
-  classifier.load('model.json', customModelReady);
+  // classifier.load('model.json', customModelReady);
 }
 
 function customModelReady(){
@@ -53,7 +53,9 @@ function setup() {
   var constraints = {
     audio: false,
     video: {
-      facingMode: "user"
+      facingMode: {
+        "exact": "environment"
+      }
     }
   };
   
