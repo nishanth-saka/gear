@@ -90,7 +90,6 @@ function setup() {
       });       
     });
 
-    image(video, 0, 0, 320, 240);
 
   });
 
@@ -154,7 +153,9 @@ function setup() {
 }
 
 function draw() {
-
+  if(video){
+    image(video, 0, 0, 320, 240);
+  }
   // background(0);
   // image(video, 0, 0, 320, 240);
   // fill(255);
