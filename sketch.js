@@ -81,48 +81,48 @@ function setup() {
   // background(200);  
   
   //label = 'Initializing ml5..';
-  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
-  // //label = 'ml5 READY..';
+  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  // // //label = 'ml5 READY..';
 
-  // //label = 'Initializing mobilenet..';
-  classifier = mobilenet.classification(video, videoReady);   
-  // //label = 'mobilenet READY..';
+  // // //label = 'Initializing mobilenet..';
+  // classifier = mobilenet.classification(video, videoReady);   
+  // // //label = 'mobilenet READY..';
   
-  sampleButton = createButton('Turbine');
-  sampleButton.mousePressed(function(args){
-     classifier.addImage('Turbine');   
-     console.log('Turbine...');
-    //label = 'Turbine';     
-  });
+  // sampleButton = createButton('Turbine');
+  // sampleButton.mousePressed(function(args){
+  //    classifier.addImage('Turbine');   
+  //    console.log('Turbine...');
+  //   //label = 'Turbine';     
+  // });
   
-  meButton = createButton('Helicopter');
-  meButton.mousePressed(function(args){
-    classifier.addImage('Helicopter');        
-    console.log('Helicopter...');  
-  });
+  // meButton = createButton('Helicopter');
+  // meButton.mousePressed(function(args){
+  //   classifier.addImage('Helicopter');        
+  //   console.log('Helicopter...');  
+  // });
   
-  trainButton = createButton('TRAIN');
-  trainButton.mousePressed(function(){
-    console.log('Training Begins...');
-    classifier.train(whileTraining);
+  // trainButton = createButton('TRAIN');
+  // trainButton.mousePressed(function(){
+  //   console.log('Training Begins...');
+  //   classifier.train(whileTraining);
     
         
-  });
+  // });
   
-  saveButton = createButton('Check');
-  saveButton.mousePressed(function(){
-    // classifier.save();
-    classifier.classify(video)
-    .then(function (obj) { 
-        console.log('Success, You are a GEEK'); 
-        console.log(obj[0].label);
-    })
-    .catch(function (err) { 
-        console.log('Some error has occured'); 
-        console.log(err);
-    }); ;
-  //   label = 'Reset';    
-  });
+  // saveButton = createButton('Check');
+  // saveButton.mousePressed(function(){
+  //   // classifier.save();
+  //   classifier.classify(video)
+  //   .then(function (obj) { 
+  //       console.log('Success, You are a GEEK'); 
+  //       console.log(obj[0].label);
+  //   })
+  //   .catch(function (err) { 
+  //       console.log('Some error has occured'); 
+  //       console.log(err);
+  //   }); ;
+  // //   label = 'Reset';    
+  // });
 }
 
 function draw() {
