@@ -70,10 +70,11 @@ function setup() {
   video.hide();
 
   console.log('Initializing classifier...');
+  mobilenet = ml5.featureExtractor('MobileNet', modelReady);
   classifier = mobilenet.classification(video, videoReady);   
   console.log('Classifier ready...');
 
-  //classifier.addImage('Helicopter');        
+  classifier.addImage('Helicopter');        
   
   
   // video = createCapture(constraints, function(stream) {
@@ -85,7 +86,7 @@ function setup() {
   // background(200);  
   
   //label = 'Initializing ml5..';
-  // mobilenet = ml5.featureExtractor('MobileNet', modelReady);
+  // 
   // // //label = 'ml5 READY..';
 
   // // //label = 'Initializing mobilenet..';
