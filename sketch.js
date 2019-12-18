@@ -98,18 +98,20 @@ function setup() {
   //   label = 'Helicopter';     
   // });
   
-  // trainButton = createButton('TRAIN');
-  // trainButton.mousePressed(function(){
-  //   console.log('Training Begins');
-  //   classifier.train(whileTraining).then(function(res){
-  //     console.log('TRAIN');
-  //     console.log(res);   
-
-  //     label = 'TRAIN';
-  //   });
+  trainButton = createButton('TRAIN');
+  trainButton.mousePressed(function(){
+    console.log('Training Begins...');
+    classifier.train(whileTraining)
+    .then(function () { 
+        console.log('Success, You are a GEEK'); 
+    })
+    .catch(function (err) { 
+        console.log('Some error has occured'); 
+        console.log(err);
+    }); 
     
         
-  // });
+  });
   
   // saveButton = createButton('Reset');
   // saveButton.mousePressed(function(){
