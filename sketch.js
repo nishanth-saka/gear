@@ -80,10 +80,11 @@ function setup() {
     .then(function () { 
         console.log('Success, You are a GEEK'); 
     })
-    .catch(function () { 
+    .catch(function (err) { 
         console.log('Some error has occured'); 
+        console.log(err);
     }); 
-    
+
     label = 'Turbine';     
   });
   
