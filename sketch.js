@@ -20,8 +20,10 @@ function modelReady() {
 // }
 
 function videoReady() {
-  console.log('Video is ready!!!');     
-  classifier.addImage('Turbine');    
+  console.log('Video is ready!!!');  
+  console.log('Adding Image...');  
+  classifier.addImage('Turbine');   
+  console.log('Image ready...');       
 }
 
 function whileTraining(loss){
@@ -73,7 +75,7 @@ function setup() {
 
   video = createCapture(constraints, function(stream) {
     console.log(stream);    
-    mobilenet.classification(video, videoReady);   
+    classifier = mobilenet.classification(video, videoReady);       
   });
 
   console.log(video);
