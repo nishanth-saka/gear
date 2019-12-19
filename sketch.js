@@ -78,7 +78,7 @@ function setup() {
         minHeight: 720
       },
       optional: [{ maxFrameRate: 10 }],
-      facingMode: 'environment'
+      facingMode: 'environment'    
     },
     audio: false
   };
@@ -173,7 +173,7 @@ function setup() {
       .catch(function (err) {
         console.log('Some error has occured');
         console.log(err);
-        label = err;
+        label = 'Some error has occured';
       });;
     //   label = 'Reset';    
   });
@@ -188,9 +188,15 @@ function draw() {
   textSize(22);
   fill(255,255,255);
   text(label, 30, 450);
+  
   if(!window.navigator.onLine){
     label = 'Please check internet connection.';
-  }
+    isOnline =true;
+  } else if(label === 'Please check internet connection.')  {
+  
+    label = '';
+  
+}
   // image(video, 0, 0, width, width * video.height / video.width)
   // .then(function (obj) { 
   //     console.log('Success, You are a GEEK');       
@@ -200,3 +206,4 @@ function draw() {
   //     console.log(err);
   // }); 
 }
+
