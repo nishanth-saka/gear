@@ -8,6 +8,7 @@ let meButton;
 let label = '';
 let infoDiv;
 let isClicked = false;
+let img;
 
 var w = 640;
 var h = 480;
@@ -69,7 +70,7 @@ function addedImage(res, err) {
 
 function setup() {
 
-  createCanvas(768, 480);
+  createCanvas(windowWidth, windowHeight);
 
   let constraints = {
     video: {
@@ -77,13 +78,13 @@ function setup() {
         minWidth: 1280,
         minHeight: 720
       },
-      optional: [{ maxFrameRate: 10 }],
-      facingMode: 'environment'    
+      optional: [{ maxFrameRate: 10 }]
     },
     audio: false
   };
   // infoDiv = createDiv(label);
   // infoDiv.position(30,450);
+  // img = loadImage('http://172.18.3.219:8081/pexels-photo.jpg');
 
   mobilenet = ml5.featureExtractor('MobileNet', function () {
 
@@ -111,16 +112,16 @@ function setup() {
   let col = color(25, 23, 200, 50);
   sampleButton.style('background-color', col);
   sampleButton.position(10, 500);
-  
+
   sampleButton.mousePressed(function (args) {
     label = 'Capturing Object A Please wait...';
-  isClicked =true;
+    isClicked = true;
     setTimeout(() => {
-    classifier.addImage(video, 'Object A', function () {
-      console.log('Object A...');
-      label = '';
-    });
-   }, 0);
+      classifier.addImage(video, 'Object A', function () {
+        console.log('Object A...');
+        label = '';
+      });
+    }, 0);
   });
 
   meButton = createButton('Object B');
@@ -128,13 +129,13 @@ function setup() {
   meButton.position(100, 500);
   meButton.mousePressed(function (args) {
     label = 'Capturing Object B Please wait...';
-    isClicked =true;
+    isClicked = true;
     setTimeout(() => {
-    classifier.addImage(video, 'Object B', function () {
-      console.log('Object B...');
-      label = '';
-    });
-   }, 0);
+      classifier.addImage(video, 'Object B', function () {
+        console.log('Object B...');
+        label = '';
+      });
+    }, 0);
   });
 
   trainButton = createButton('Train');
@@ -143,19 +144,19 @@ function setup() {
 
   trainButton.mousePressed(function () {
     console.log('Training Begins Please wait...');
-    
-  if(isClicked){
-    try {
-      label = 'Training Begins Please wait...'; 
-      classifier.train(whileTraining);  
-    } catch (err) {
-      console.log(err);
-      label = 'generic error';
-    }
 
-  } else {
-    label = 'Please capture the images for training.'
-  }
+    if (isClicked) {
+      try {
+        label = 'Training Begins Please wait...';
+        classifier.train(whileTraining);
+      } catch (err) {
+        console.log(err);
+        label = 'generic error';
+      }
+
+    } else {
+      label = 'Please capture the images for training.'
+    }
   });
 
   saveButton = createButton('Test');
@@ -169,6 +170,20 @@ function setup() {
         console.log('Success, You are a GEEK');
         console.log(obj[0].label);
         label = obj[0].label;
+
+
+        httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
+          console.log('success from http call :::::: ', success);
+          img = loadImage('./images/pexels-photo.jpg');
+          // background(0);
+          //  image(img, 0, 0, 2048, 2048);
+        }, function (error) {
+          console.log('error from http call :::::: ', error);
+        });
+
+
+
+
       })
       .catch(function (err) {
         console.log('Some error has occured');
@@ -177,26 +192,34 @@ function setup() {
       });;
     //   label = 'Reset';    
   });
+
+  resetButton = createButton('Reset');
+  resetButton.style('background-color', col);
+  resetButton.position(360, 500);
+  resetButton.mousePressed(function () {
+    console.log('reset button clicked');
+    img = null;
+  });
+
+
 }
 
 function draw() {
   image(video, 0, 0, 1024, 480);
 
-  //  background(255,255,255);  
-  // image(video, 0, 0, 320, 240);
-  // fill(255);
   textSize(22);
-  fill(255,255,255);
+  fill(255, 255, 255);
   text(label, 30, 450);
-  
-  if(!window.navigator.onLine){
+
+  if (!window.navigator.onLine) {
     label = 'Please check internet connection.';
-    isOnline =true;
-  } else if(label === 'Please check internet connection.')  {
-  
+    isOnline = true;
+  } else if (label === 'Please check internet connection.') {
     label = '';
-  
-}
+  }
+  if (img) {
+    image(img, 0, 0, 1024, 480);
+  }
   // image(video, 0, 0, width, width * video.height / video.width)
   // .then(function (obj) { 
   //     console.log('Success, You are a GEEK');       
