@@ -9,7 +9,18 @@ let label = '';
 let infoDiv;
 let isClicked = false;
 let img;
-
+let dummyResponse = [
+  {
+    image: './images/pexels-photo.jpg'
+  },
+  {
+    image: './images/download.jpg'
+  },
+  {
+    image: './images/panda.jpg'
+  }
+];
+let index =0;
 var w = 640;
 var h = 480;
 
@@ -174,7 +185,7 @@ function setup() {
 
         httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
           console.log('success from http call :::::: ', success);
-          img = loadImage('./images/pexels-photo.jpg');
+          img = loadImage(dummyResponse[index].image);
           // background(0);
           //  image(img, 0, 0, 2048, 2048);
         }, function (error) {
@@ -184,8 +195,7 @@ function setup() {
 
 
 
-      })
-      .catch(function (err) {
+      }).catch(function (err) {
         console.log('Some error has occured');
         console.log(err);
         label = 'Some error has occured';
@@ -199,8 +209,37 @@ function setup() {
   resetButton.mousePressed(function () {
     console.log('reset button clicked');
     img = null;
+    leftArrow.hide();
+    rightArrow.hide();
   });
 
+  leftArrow = createButton('Left Arrow');
+  leftArrow.style('background-color', col);
+  leftArrow.position(10, 240);
+  leftArrow.hide();
+  leftArrow.mousePressed(function () {
+    console.log('left arrow clicked');
+    if(index === 0 ){
+      index = dummyResponse.length - 1;
+    } else {
+      index -= 1;
+    }
+    img = loadImage(dummyResponse[index].image);
+  });
+
+  rightArrow = createButton('rightArrow');
+  rightArrow.style('background-color', col);
+  rightArrow.position(775, 240);
+  rightArrow.hide();
+  rightArrow.mousePressed(function () {
+    console.log('right arrow clicked');
+    if(dummyResponse.length - 1 > index ){
+      index += 1;
+    } else {
+      index = 0;
+    }
+    img = loadImage(dummyResponse[index].image);
+  });
 
 }
 
@@ -219,6 +258,8 @@ function draw() {
   }
   if (img) {
     image(img, 0, 0, 1024, 480);
+    rightArrow.show();
+    leftArrow.show();
   }
   // image(video, 0, 0, width, width * video.height / video.width)
   // .then(function (obj) { 
