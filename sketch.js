@@ -20,7 +20,7 @@ let dummyResponse = [
     image: './images/panda.jpg'
   }
 ];
-let index =0;
+let index = 0;
 var w = 640;
 var h = 480;
 
@@ -86,6 +86,15 @@ let ellipse3YLoc;
 let ellipse4XLoc;
 let ellipse4YLoc;
 
+let ellipse5XLoc;
+let ellipse5YLoc;
+
+let ellipse6XLoc;
+let ellipse6YLoc;
+
+let ellipse7XLoc;
+let ellipse7YLoc;
+
 function setup() {
 
   rectWidth = windowWidth;
@@ -98,7 +107,7 @@ function setup() {
   imgXLoc = 0;
   imgYLoc = rectHeight;
 
-  ellipse1XLoc = (windowWidth - ((ellipseWidth * 4) + gap * 3))/2;
+  ellipse1XLoc = (windowWidth - ((ellipseWidth * 4) + gap * 3)) / 2;
   ellipse1YLoc = windowHeight - ellipseHeight - 30;
 
 
@@ -111,7 +120,14 @@ function setup() {
   ellipse4XLoc = ellipse3XLoc + ellipseWidth + gap;
   ellipse4YLoc = ellipse3YLoc;
 
+  ellipse5XLoc = ellipse4XLoc + ellipseWidth + gap;
+  ellipse5YLoc = ellipse4YLoc;
 
+  ellipse6XLoc = windowWidth - 50;
+  ellipse6YLoc = windowHeight / 2;
+
+  ellipse7XLoc = 60;
+  ellipse7YLoc = windowHeight / 2;
 
   //Making the canvas fill the window
   createCanvas(windowWidth, windowHeight);
@@ -119,7 +135,7 @@ function setup() {
   fill(bannerColor);
   rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
 
-  
+
 
   let constraints = {
     video: {
@@ -131,8 +147,8 @@ function setup() {
     },
     audio: false
   };
-  
- 
+
+
   video = createCapture(constraints, function (stream) {
     mobilenet = ml5.featureExtractor('MobileNet', function () {
       classifier = mobilenet.classification(video, function () {
@@ -247,7 +263,7 @@ function setup() {
 
 function draw() {
 
-  if(loaded){
+  if (loaded) {
     image(video, imgXLoc, imgYLoc, imgWidth, imgHeight);
 
     fill(204, 101, 192, 127);
@@ -271,12 +287,14 @@ function draw() {
     fill(255, 255, 255);
     text("TRAIN", ellipse3XLoc, ellipse3YLoc);
 
-    fill(83,73,156, 100);
+    fill(83, 73, 156, 100);
     ellipse(ellipse4XLoc, ellipse4YLoc, ellipseWidth, ellipseHeight);
     textSize(10);
     textAlign(CENTER, CENTER);
     fill(255, 255, 255);
     text("TEST", ellipse4XLoc, ellipse4YLoc);
+
+
 
     textSize(22);
     fill(255, 255, 255);
@@ -291,13 +309,15 @@ function draw() {
     }
     if (img) {
       image(img, 0, 0, windowWidth, windowHeight);
-    }  
-  }  
+      showReset();
+
+    }
+  }
 }
 
 function mousePressed() {
 
-  
+
   // Check if mouse is inside the circle
   let d = dist(mouseX, mouseY, ellipse1XLoc, ellipse1YLoc);
 
@@ -330,37 +350,63 @@ function mousePressed() {
     scanObject('TEST');
     return;
   }
+
+  d = dist(mouseX, mouseY, ellipse5XLoc, ellipse5YLoc);
+
+  if (d < ellipseWidth) {
+    console.log('Ellipse 5');
+    fill(bannerColor);
+    rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
+    scanObject('RESET');
+    return;
+  }
+
+  d = dist(mouseX, mouseY, ellipse6XLoc, ellipse6YLoc);
+
+  if (d < ellipseWidth) {
+    console.log('Ellipse 6');
+    scanObject('NEXT');
+    return;
+  }
+
+  d = dist(mouseX, mouseY, ellipse7XLoc, ellipse7YLoc);
+
+  if (d < ellipseWidth) {
+    console.log('Ellipse 7');
+    scanObject('PREVIOUS');
+    return;
+  }
 }
 
-function scanObject(objectType){
+function scanObject(objectType) {
   label = 'Capturing Please wait...';
 
-  if(objectType == 'Turbine'){
+  if (objectType == 'Turbine') {
 
-    
+
     isClicked = true;
     setTimeout(() => {
       classifier.addImage(video, 'Turbine', function () {
-        console.log('Turbine...');   
-        label = 'Ready..';     
+        console.log('Turbine...');
+        label = 'Ready..';
       });
     }, 0);
 
-  } else if(objectType == 'Helicopter'){
+  } else if (objectType == 'Helicopter') {
 
     isClicked = true;
     setTimeout(() => {
       classifier.addImage(video, 'Helicopter', function () {
-        console.log('Helicopter...');   
-        label = 'Ready..';           
+        console.log('Helicopter...');
+        label = 'Ready..';
       });
     }, 0);
 
-  } else if(objectType == 'Train'){
+  } else if (objectType == 'Train') {
     console.log('Training Begins Please wait...');
     label = 'Training Begins Please wait...';
-    classifier.train(whileTraining);    
-  } else if(objectType == 'TEST'){
+    classifier.train(whileTraining);
+  } else if (objectType == 'TEST') {
     label = '';
     classifier.classify(video)
       .then(function (obj) {
@@ -369,14 +415,14 @@ function scanObject(objectType){
         label = 'Object Identified: ' + obj[0].label;
 
 
-        // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
-        //   console.log('success from http call :::::: ', success);
-        //   img = loadImage('./images/pexels-photo.jpg');
-        //   // background(0);
-        //   //  image(img, 0, 0, 2048, 2048);
-        // }, function (error) {
-        //   console.log('error from http call :::::: ', error);
-        // });
+        httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
+          console.log('success from http call :::::: ', success);
+          img = loadImage(dummyResponse[index].image);
+          // background(0);
+          image(img, 0, 0, windowWidth, windowHeight);
+        }, function (error) {
+          console.log('error from http call :::::: ', error);
+        });
 
 
       })
@@ -386,6 +432,52 @@ function scanObject(objectType){
         label = 'Some error has occured';
       });;
     //   label = 'Reset';   
+  } else if (objectType == 'RESET') {
+    console.log('reset clicked ');
+    img = null;
+  } else if (objectType === 'NEXT') {
+
+    if (dummyResponse.length - 1 > index) {
+      index += 1;
+    } else {
+      index = 0;
+    }
+    img = loadImage(dummyResponse[index].image);
+
+  } else if (objectType === 'PREVIOUS') {
+
+    if (index === 0) {
+      index = dummyResponse.length - 1;
+    } else {
+      index -= 1;
+    }
+    img = loadImage(dummyResponse[index].image);
   }
+}
+
+function showReset() {
+
+  fill(83, 73, 156, 100);
+  ellipse(ellipse7XLoc, ellipse7YLoc, ellipseWidth, ellipseHeight);
+  textSize(10);
+  textAlign(CENTER, CENTER);
+  fill(255, 255, 255);
+  text("PREVIOUS", ellipse7XLoc, ellipse7YLoc);
+
+  fill(83, 73, 156, 100);
+  ellipse(ellipse5XLoc, ellipse5YLoc, ellipseWidth, ellipseHeight);
+  textSize(10);
+  textAlign(CENTER, CENTER);
+  fill(255, 255, 255);
+  text("RESET", ellipse5XLoc, ellipse5YLoc);
+
+  fill(83, 73, 156, 100);
+  ellipse(ellipse6XLoc, ellipse6YLoc, ellipseWidth, ellipseHeight);
+  textSize(10);
+  textAlign(CENTER, CENTER);
+  fill(255, 255, 255);
+  text("NEXT", ellipse6XLoc, ellipse6YLoc);
+
+  
 }
 
