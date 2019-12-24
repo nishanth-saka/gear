@@ -25,30 +25,6 @@ var w = 640;
 var h = 480;
 
 
-// function modelReady() {
-//   console.log('Model is ready!!!');  
-//   // classifier.load('model.json', customModelReady);  
-// }
-
-// function customModelReady(){
-//   console.log('Custom Model Set..');  
-////   label = 'Model ready!';  
-//   classifier.classify(gotResults);
-// }
-
-// function videoReady() {
-//   console.log('Video is ready!!!');  
-//   console.log('Adding Image...');  
-
-//   // classifier.addImage(video,'Turbine')
-//   //   .then(function (obj) { 
-//   //       console.log('Image ready...');               
-//   //   })
-//   //   .catch(function (err) { 
-//   //       console.log('Some error has occured'); 
-//   //       console.log(err);
-//   //   });  
-// }
 
 function whileTraining(loss) {
   console.log('Training...');
@@ -79,38 +55,89 @@ function addedImage(res, err) {
   console.log(err);
 }
 
+
+let rectWidth;
+let rectHeight;
+let rectXLoc;
+let rectYLoc;
+
+let imgWidth;
+let imgHeight;
+let imgXLoc;
+let imgYLoc;
+
+let bannerColor = 'rgb(83,73,156)';
+let buttonColor = 'rgb(255, 255, 255)';
+
+let gap = 20;
+let ellipseWidth = 50;
+let ellipseHeight = 50;
+
+let ellipse1XLoc;
+let ellipse1YLoc;
+
+let ellipse2XLoc;
+let ellipse2YLoc;
+
+let ellipse3XLoc;
+let ellipse3YLoc;
+
+let ellipse4XLoc;
+let ellipse4YLoc;
+
 function setup() {
 
+  rectWidth = windowWidth;
+  rectHeight = windowHeight * 0.15;
+  rectXLoc = 0;
+  rectYLoc = 0;
+
+  imgWidth = windowWidth;
+  imgHeight = windowHeight * 0.9;
+  imgXLoc = 0;
+  imgYLoc = rectHeight;
+
+  ellipse1XLoc = (windowWidth - ((ellipseWidth * 4) + gap * 3))/2;
+  ellipse1YLoc = windowHeight - ellipseHeight - 30;
+
+
+  ellipse2XLoc = ellipse1XLoc + ellipseWidth + gap;
+  ellipse2YLoc = ellipse1YLoc;
+
+  ellipse3XLoc = ellipse2XLoc + ellipseWidth + gap;
+  ellipse3YLoc = ellipse2YLoc;
+
+  ellipse4XLoc = ellipse3XLoc + ellipseWidth + gap;
+  ellipse4YLoc = ellipse3YLoc;
+
+
+
+  //Making the canvas fill the window
   createCanvas(windowWidth, windowHeight);
+
+  fill(bannerColor);
+  rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
+
+  
 
   let constraints = {
     video: {
       mandatory: {
-        minWidth: 1280,
-        minHeight: 720
+        minWidth: windowWidth,
+        minHeight: windowHeight
       },
-      optional: [{ maxFrameRate: 10 }]
+      // optional: [{ maxFrameRate: 10 }]
     },
     audio: false
   };
-  // infoDiv = createDiv(label);
-  // infoDiv.position(30,450);
-  // img = loadImage('http://172.18.3.219:8081/pexels-photo.jpg');
-
-  mobilenet = ml5.featureExtractor('MobileNet', function () {
-
-  });
-
-
-  console.log('capturing video..');
-
+  
+ 
   video = createCapture(constraints, function (stream) {
-
-    console.log('creating classifier..');
-
-    classifier = mobilenet.classification(video, function () {
-      video.hide();
-      console.log('all set!');
+    mobilenet = ml5.featureExtractor('MobileNet', function () {
+      classifier = mobilenet.classification(video, function () {
+        video.hide();
+        console.log('all set!');
+      });
     });
   });
 
@@ -120,7 +147,7 @@ function setup() {
 
 
   sampleButton = createButton('Object A');
-  let col = color(25, 23, 200, 50);
+  let col = color(255, 255, 255, 255);
   sampleButton.style('background-color', col);
   sampleButton.position(10, 500);
 
@@ -243,8 +270,23 @@ function setup() {
 
 }
 
+
+
 function draw() {
-  image(video, 0, 0, 1024, 480);
+
+  image(video, imgXLoc, imgYLoc, imgWidth, imgHeight);
+
+  fill(204, 101, 192, 127);
+  ellipse(ellipse1XLoc, ellipse1YLoc, ellipseWidth, ellipseHeight);
+
+  fill(204, 22, 12, 190);
+  ellipse(ellipse2XLoc, ellipse2YLoc, ellipseWidth, ellipseHeight);
+
+  fill(10, 255, 255, 77);
+  ellipse(ellipse3XLoc, ellipse3YLoc, ellipseWidth, ellipseHeight);
+
+  fill(83,73,156, 100);
+  ellipse(ellipse4XLoc, ellipse4YLoc, ellipseWidth, ellipseHeight);
 
   textSize(22);
   fill(255, 255, 255);
@@ -261,13 +303,5 @@ function draw() {
     rightArrow.show();
     leftArrow.show();
   }
-  // image(video, 0, 0, width, width * video.height / video.width)
-  // .then(function (obj) { 
-  //     console.log('Success, You are a GEEK');       
-  // })
-  // .catch(function (err) { 
-  //     console.log('Some error has occured'); 
-  //     console.log(err);
-  // }); 
 }
 
