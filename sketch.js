@@ -299,7 +299,7 @@ function draw() {
     label = '';
   }
   if (img) {
-    image(img, 0, 0, 1024, 480);
+    image(img, 0, 0, windowWidth, windowHeight);
     rightArrow.show();
     leftArrow.show();
   }
