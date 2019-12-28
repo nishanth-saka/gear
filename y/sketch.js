@@ -1,6 +1,7 @@
 // 
 
-let octahedron;
+let turbineModel;
+let heliModel;
 
 let mobilenet;
 let video;
@@ -25,14 +26,20 @@ var h = 480;
 let loaded = false;
 let completionMsg = 'Set Up Complete.. added turbine draw';
 
+let detectedObj = '';
+
 function preload() {
   console.log('preload ');
-  octahedron = loadModel('turbine.obj');
+  turbineModel = loadModel('turbine.obj');
+  // heliModel = loadModel('heli.obj');
 }
 
+let cnv;
 function setup() {
   console.log('setup');
   createCanvas(windowWidth, windowHeight, WEBGL);
+
+  // createCanvas(windowWidth, windowHeight);
 
     let constraints = {
     video: {
@@ -53,8 +60,8 @@ function setup() {
           video.hide();
           console.log(completionMsg);
           loaded = true;
-
-          console.log(classifier);
+          setUpButtons();
+          showButtons();
 
           // testModel();
 
@@ -65,25 +72,122 @@ function setup() {
 
   video.elt.setAttribute('playsinline', '');
   video.hide();
+
+  console.log('scale 150');
+  
+}
+
+function setUpButtons(){
+  rectWidth = windowWidth;
+  rectHeight = windowHeight * 0.15;
+  rectXLoc = 0;
+  rectYLoc = 0;
+
+  imgWidth = windowWidth;
+  imgHeight = windowHeight * 0.9;
+  imgXLoc = 0;
+  imgYLoc = rectHeight;
+
+  ellipse1XLoc = (windowWidth - ((ellipseWidth * 5) + gap * 4))/2;
+  ellipse1YLoc = (windowHeight - ellipseHeight) - ellipseHeight/2;
+
+
+  ellipse2XLoc = ellipse1XLoc + ellipseWidth + gap;
+  ellipse2YLoc = ellipse1YLoc;
+
+  ellipse3XLoc = ellipse2XLoc + ellipseWidth + gap;
+  ellipse3YLoc = ellipse2YLoc;
+
+  ellipse4XLoc = ellipse3XLoc + ellipseWidth + gap;
+  ellipse4YLoc = ellipse3YLoc;
+
+  ellipse5XLoc = ellipse4XLoc + ellipseWidth + gap;
+  ellipse5YLoc = ellipse4YLoc;
+
+  
+  //Making the canvas fill the window
+  createCanvas(windowWidth, windowHeight, WEBGL);
+
+  fill(bannerColor);
+  rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
+
+  tbnTurbine = createButton('Turbine');
+  tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
+  tbnTurbine.mousePressed(function(){
+    classifier.addImage(video, 'Turbine', function () {
+      console.log('Turbine...');   
+      label = 'Ready..';     
+    });
+  });
+  tbnTurbine.size(ellipseWidth, ellipseHeight);
+  tbnTurbine.hide();
+
+
+  btnHeli = createButton('Helicopter');
+  btnHeli.position(ellipse2XLoc, ellipse1YLoc);
+  btnHeli.mousePressed(function(){
+    classifier.addImage(video, 'Helicopter', function () {
+      console.log('Helicopter...');   
+      label = 'Ready..';     
+    });
+  });
+  btnHeli.size(ellipseWidth, ellipseHeight);
+  btnHeli.hide();
+
+  btn3 = createButton('03');
+  btn3.position(ellipse3XLoc, ellipse1YLoc);
+  btn3.mousePressed(function(){
+    classifier.addImage(video, '03', function () {
+      console.log('03...');   
+      label = 'Ready..';     
+    });
+  });
+  btn3.size(ellipseWidth, ellipseHeight);
+  btn3.hide();
+
+  btnTrain = createButton('TRAIN');
+  btnTrain.position(ellipse4XLoc, ellipse1YLoc);
+  btnTrain.mousePressed(function(){
+      trainModel();
+  });
+  btnTrain.size(ellipseWidth, ellipseHeight);
+  btnTrain.hide();
+
+  btnTest = createButton('TEST');
+  btnTest.position(ellipse5XLoc, ellipse1YLoc);
+  btnTest.mousePressed(function(){
+    testModel();
+  });
+  btnTest.size(ellipseWidth, ellipseHeight);
+  btnTest.hide();
+
+  console.log('trainModel...');
 }
 
 function draw() {
-  console.log('drawing thi..');
-  console.log(loaded);
-
+  
   if(loaded){
     
     background(200);
-    image(video, 10, 10, 300, 300);  
+    image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
 
-    rotateX(frameCount * 0.01);
-    rotateY(frameCount * 0.01);
+    
+
+    // rotateX(frameCount * 0.01);
+    // rotateY(frameCount * 0.01);
     // normalMaterial(); // For effect
-    scale(100);
+    // scale(150);
+    // // translate(0, 0, 10)
     
-    
-    
-    model(octahedron);
+    // if(detectedObj === 'Turbine'){
+    //   rotateX(300);
+    //   rotateY(30);      
+    // } else {
+    //   rotateX(0);
+    //   rotateY(0); 
+    // } 
+
+    // model(turbineModel);       
   }
   
 }
@@ -117,6 +221,51 @@ function addedImage(res, err) {
   console.log(err);
 }
 
+function trainModel(){
+  console.log('Training Begins Please wait...');
+    label = 'Training Begins Please wait...';
+    classifier.train(whileTraining);  
+}
+
+function testModel() {
+  // label = '';
+      classifier.classify(video)
+        .then(function (obj) {
+          console.log('');
+          console.log('');
+          console.log('obj');
+          console.log(obj);
+          console.log('');
+          console.log(obj[0].label);
+          // label = 'Object Identified: ' + obj[0].label;
+
+          detectedObj = obj[0].label;
+          testModel();
+          // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
+          //   console.log('success from http call :::::: ', success);
+          //   img = loadImage('./images/pexels-photo.jpg');
+          //   // background(0);
+          //   //  image(img, 0, 0, 2048, 2048);
+          // }, function (error) {
+          //   console.log('error from http call :::::: ', error);
+          // });
+
+
+        })
+        .catch(function (err) {
+          console.log('Some error has occured');
+          console.log(err);
+          // label = 'Some error has occured';
+        });;
+}
+
+function showButtons(){
+  tbnTurbine.show();
+  btnHeli.show();
+  btnTrain.show();
+  btnTest.show();
+  btn3.show();
+}
 
 
 
@@ -149,7 +298,7 @@ let ellipse4YLoc;
 let ellipse5XLoc;
 let ellipse5YLoc;
 
-let tbnTurbine, btnHeli, btnTrain, btnTest, btnSave;
+let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 
 
 // function setup() {
@@ -261,50 +410,9 @@ let tbnTurbine, btnHeli, btnTrain, btnTest, btnSave;
 
 // }
 
-// function trainModel(){
-//   console.log('Training Begins Please wait...');
-//     label = 'Training Begins Please wait...';
-//     classifier.train(whileTraining);  
-// }
-
-// function testModel() {
-//   label = '';
-//       classifier.classify(video)
-//         .then(function (obj) {
-//           console.log('');
-//           console.log('');
-//           console.log('obj');
-//           console.log(obj);
-//           console.log('');
-//           console.log(obj[0].label);
-//           label = 'Object Identified: ' + obj[0].label;
-
-//           // testModel();
-//           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
-//           //   console.log('success from http call :::::: ', success);
-//           //   img = loadImage('./images/pexels-photo.jpg');
-//           //   // background(0);
-//           //   //  image(img, 0, 0, 2048, 2048);
-//           // }, function (error) {
-//           //   console.log('error from http call :::::: ', error);
-//           // });
 
 
-//         })
-//         .catch(function (err) {
-//           console.log('Some error has occured');
-//           console.log(err);
-//           label = 'Some error has occured';
-//         });;
-// }
 
-// function showButtons(){
-//   tbnTurbine.show();
-//   btnHeli.show();
-//   btnTrain.show();
-//   btnTest.show();
-
-// }
 
 // function draw() {
 
@@ -314,7 +422,8 @@ let tbnTurbine, btnHeli, btnTrain, btnTest, btnSave;
 //     image(video, imgXLoc, imgYLoc, imgWidth, imgHeight);
 //     rotateX(frameCount * 0.01);
 //   rotateY(frameCount * 0.01);
-//   model(octahedron);
+//   model(turbineModel);
+//   model(theliodel);
 
 //     // fill(204, 101, 192, 127);
 //     // ellipse(ellipse1XLoc, ellipse1YLoc, ellipseWidth, ellipseHeight);
