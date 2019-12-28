@@ -26,12 +26,13 @@ var h = 480;
 let loaded = false;
 let completionMsg = 'Set Up Complete.. added turbine draw';
 
-let detectedObj = '';
+let detectedObj;
+let textureObj;
 
 function preload() {
   console.log('preload ');
   turbineModel = loadModel('turbine.obj');
-  // heliModel = loadModel('heli.obj');
+  textureObj = loadImage('tex.jpg');  
 }
 
 let cnv;
@@ -63,7 +64,7 @@ function setup() {
           setUpButtons();
           showButtons();
 
-          // testModel();
+        //   testModel();
 
         // })        
       });
@@ -77,6 +78,30 @@ function setup() {
   
 }
 
+
+function draw() {
+  
+  if(loaded){
+    
+    background(200);
+    image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
+    scale(200);
+
+    if(changeView){
+      rotateX(300);
+      rotateY(300);
+    } else {
+      rotateX(frameCount * 0.01);
+      rotateY(frameCount * 0.01);
+    
+    }
+
+    model(turbineModel);            
+  }
+  
+}
+
+let changeView = false;
 function setUpButtons(){
   rectWidth = windowWidth;
   rectHeight = windowHeight * 0.15;
@@ -115,6 +140,7 @@ function setUpButtons(){
   tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
   tbnTurbine.mousePressed(function(){
     classifier.addImage(video, 'Turbine', function () {
+      changeView = !changeView;
       console.log('Turbine...');   
       label = 'Ready..';     
     });
@@ -134,16 +160,16 @@ function setUpButtons(){
   btnHeli.size(ellipseWidth, ellipseHeight);
   btnHeli.hide();
 
-  btn3 = createButton('03');
-  btn3.position(ellipse3XLoc, ellipse1YLoc);
-  btn3.mousePressed(function(){
-    classifier.addImage(video, '03', function () {
-      console.log('03...');   
-      label = 'Ready..';     
-    });
-  });
-  btn3.size(ellipseWidth, ellipseHeight);
-  btn3.hide();
+  // btn3 = createButton('03');
+  // btn3.position(ellipse3XLoc, ellipse1YLoc);
+  // btn3.mousePressed(function(){
+  //   classifier.addImage(video, '03', function () {
+  //     console.log('03...');   
+  //     label = 'Ready..';     
+  //   });
+  // });
+  // btn3.size(ellipseWidth, ellipseHeight);
+  // btn3.hide();
 
   btnTrain = createButton('TRAIN');
   btnTrain.position(ellipse4XLoc, ellipse1YLoc);
@@ -162,34 +188,6 @@ function setUpButtons(){
   btnTest.hide();
 
   console.log('trainModel...');
-}
-
-function draw() {
-  
-  if(loaded){
-    
-    background(200);
-    image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
-
-    
-
-    // rotateX(frameCount * 0.01);
-    // rotateY(frameCount * 0.01);
-    // normalMaterial(); // For effect
-    // scale(150);
-    // // translate(0, 0, 10)
-    
-    // if(detectedObj === 'Turbine'){
-    //   rotateX(300);
-    //   rotateY(30);      
-    // } else {
-    //   rotateX(0);
-    //   rotateY(0); 
-    // } 
-
-    // model(turbineModel);       
-  }
-  
 }
 
 function whileTraining(loss) {
@@ -234,12 +232,11 @@ function testModel() {
           console.log('');
           console.log('');
           console.log('obj');
-          console.log(obj);
-          console.log('');
           console.log(obj[0].label);
+          console.log(obj[0].confidence);
           // label = 'Object Identified: ' + obj[0].label;
 
-          detectedObj = obj[0].label;
+          detectedObj = obj[0];
           testModel();
           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
           //   console.log('success from http call :::::: ', success);
