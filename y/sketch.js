@@ -35,8 +35,8 @@ var modelResponse =  [];
 
 function preload() {
   console.log('preload ');
-  turbineModel = loadModel('http://172.18.3.219:8081/turbine.obj');
-  textureObj = loadImage('http://172.18.3.219:8081/tex.jpg');  
+  turbineModel = loadModel('turbine.obj');
+  textureObj = loadImage('tex.jpg');  
 }
 
 let cnv;
@@ -290,7 +290,7 @@ function testModel() {
           // label = 'Object Identified: ' + obj[0].label;
           detectedObj = obj[0];
           modelResponse = []; 
-          let url = 'http://172.18.3.219:8081/response.json';
+          let url = 'response.json';
          httpGet(url, 'json', false, function(response) {
            console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
            modelResponse =  response[obj[0].label].data;
