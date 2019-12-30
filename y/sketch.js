@@ -28,16 +28,21 @@ let loaded = false;
 let completionMsg = 'Set Up Complete.. added turbine draw';
 
 let detectedObj;
-let textureObj;
 
 let modelURL = 'model.json';
 var modelResponse =  [];
 
+let leftViewImg, rightViewImg, frontViewImg;
+let img_;
+
 function preload() {
   console.log('preload.. environment');
   turbineModel = loadModel('turbine.obj');
-  textureObj = loadImage('tex.jpg');  
-  loadFont('avenir.otf');
+  rightViewImg = loadImage('right-view.png');
+  leftViewImg = loadImage('left-view.png');
+  frontViewImg = loadImage('front-view.png');
+
+  loadFont('avenir.otf');  
 }
 
 let cnv;
@@ -91,27 +96,35 @@ function draw() {
 
     background(200);
     image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
-    scale(100);
+    
+
 
     if(!showModel){      
+
       if(detectedObj){
+
+
         if(detectedObj.label === 'Right-View'){
           // rotateX(300);
           // rotateY(300);
 
-          model.hide();
+          image(rightViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);            
+
         } else if(detectedObj.label === 'Left-View'){
           // rotateX(-300);
           // rotateY(-300);
 
-          model.hide();
+          image(leftViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);                      
+
         }  else if(detectedObj.label === 'Front-View'){
           // rotateX(0);
           // rotateY(0);
 
-          model.hide();
+          image(frontViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);                      
         }
       } else {
+        
+        scale(100); 
         rotateX(frameCount * 0.01);
         rotateY(frameCount * 0.01);    
         hideLables();     
@@ -120,6 +133,8 @@ function draw() {
         model(turbineModel);   
       }      
     } else {
+      // image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
+      scale(100);
       hideLables();
       rotateX(frameCount * 0.01);
       rotateY(frameCount * 0.01);      
@@ -129,8 +144,8 @@ function draw() {
 
     }
             
-  }
-  
+  }  
+
 }
 
 function hideLables(){
@@ -147,6 +162,7 @@ let lableArray = [];
 
 function labels(){
   hideLables();
+
 
   let y= 65;
   let divHeight = 75;
@@ -227,7 +243,6 @@ function setUpButtons(){
     //   console.log('Left-View...');   
     //   label = 'Ready..';     
     // });
-
     showModel = true;
   });
   tbnTurbine.size(ellipseWidth, ellipseHeight);
