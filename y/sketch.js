@@ -30,6 +30,8 @@ let completionMsg = 'Set Up Complete.. added turbine draw';
 let detectedObj;
 let textureObj;
 
+let modelURL = 'https://firebasestorage.googleapis.com/v0/b/gear-v1.appspot.com/o/model.json?alt=media&token=363e381f-afb9-40ca-a2e0-9f226004b4a2';
+
 function preload() {
   console.log('preload ');
   turbineModel = loadModel('turbine.obj');
@@ -58,7 +60,7 @@ function setup() {
   video = createCapture(constraints, function (stream) {
     mobilenet = ml5.featureExtractor('MobileNet',{numLabels:3}, function () {
       classifier = mobilenet.classification(video, function () {
-        classifier.load('model.json', function(){
+        classifier.load(modelURL, function(){
           video.hide();
           console.log(completionMsg);
           loaded = true;
