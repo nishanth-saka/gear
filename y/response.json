@@ -12,6 +12,18 @@
             {
                 "label":3,
                 "info": "info for Right-View label 3"
+            },
+            {
+                "label":4,
+                "info": "info for Right-View label 4"
+            },
+            {
+                "label":5,
+                "info": "info for Right-View label 5"
+            },
+            {
+                "label":6,
+                "info": "info for Right-View label 6"
             }
         ]
     },
@@ -28,6 +40,18 @@
             {
                 "label":3,
                 "info": "info for Left-View label 3"
+            },
+            {
+                "label":4,
+                "info": "info for Left-View label 4"
+            },
+            {
+                "label":5,
+                "info": "info for Left-View label 5"
+            },
+            {
+                "label":6,
+                "info": "info for Left-View label 6"
             }
         ]
     },
@@ -44,6 +68,18 @@
             {
                 "label":3,
                 "info": "info for Front-View label 3"
+            },
+            {
+                "label":4,
+                "info": "info for Front-View label 4"
+            },
+            {
+                "label":5,
+                "info": "info for Front-View label 5"
+            },
+            {
+                "label":6,
+                "info": "info for Front-View label 6"
             }
         ]
     }
