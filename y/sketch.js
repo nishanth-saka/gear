@@ -91,47 +91,92 @@ function draw() {
 
     background(200);
     image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
-    scale(150);
+    scale(100);
 
-    if(!showModel){
+    if(!showModel){      
       if(detectedObj){
         if(detectedObj.label === 'Right-View'){
-          rotateX(300);
-          rotateY(300);
+          // rotateX(300);
+          // rotateY(300);
+
+          model.hide();
         } else if(detectedObj.label === 'Left-View'){
-          rotateX(-300);
-          rotateY(-300);
+          // rotateX(-300);
+          // rotateY(-300);
+
+          model.hide();
         }  else if(detectedObj.label === 'Front-View'){
-          rotateX(0);
-          rotateY(0);
-        }  
+          // rotateX(0);
+          // rotateY(0);
+
+          model.hide();
+        }
       } else {
         rotateX(frameCount * 0.01);
-        rotateY(frameCount * 0.01);          
+        rotateY(frameCount * 0.01);    
+        hideLables();     
+        fill(255);
+        translate(0, 0, 1);
+        model(turbineModel);   
       }      
     } else {
+      hideLables();
       rotateX(frameCount * 0.01);
-      rotateY(frameCount * 0.01);          
+      rotateY(frameCount * 0.01);      
+      fill(255);
+      translate(0, 0, 1);
+      model(turbineModel);  
+
     }
-    fill(255);
-    translate(0, 0, 1);
-    model(turbineModel);          
+            
   }
   
 }
 
+function hideLables(){
+  if(lableArray && lableArray.length > 0){
+    for(let i = 0; i < lableArray.length; i++){
+      lableArray[i].remove(); 
+    } 
+  }  
+}
+
+let headerLabelDiv;
+let instructionLabelDiv;
+let lableArray = [];
+
 function labels(){
-  let y=20;
+  hideLables();
+
+  let y= 65;
+  let divHeight = 75;
+  let divWidth = 400;
   let col = color(0,0,0, 200);
+  
+   headerLabelDiv = createDiv('INSTRUCTIONS:');
+   headerLabelDiv.style('background-color', col);
+   headerLabelDiv.style('font-family', 'avenir');
+   headerLabelDiv.style('color', 'white');
+   headerLabelDiv.style('padding', '10px');
+   headerLabelDiv.size(400, 30);  
+   headerLabelDiv.position(windowWidth - (divWidth + 100), 10);
+
+   lableArray.push(headerLabelDiv);
+
   for(var index =0;index < modelResponse.length;index ++){
     let str =  modelResponse[index].label + '. '+ modelResponse[index].info;
-     let myDiv = createDiv(str);
-     myDiv.style('background-color', col);
-     myDiv.style('font-family', 'avenir');
-     myDiv.style('color', 'white');
-     myDiv.position(windowWidth - 400,y);
-     y += 75; 
+     
+     instructionLabelDiv = createDiv(str);
+     instructionLabelDiv.style('background-color', col);
+     instructionLabelDiv.style('font-family', 'avenir');
+     instructionLabelDiv.style('color', 'white');
+     instructionLabelDiv.style('padding', '10px');
+     instructionLabelDiv.size(400, divHeight);  
+     instructionLabelDiv.position(windowWidth - (divWidth + 100), y);
+     y += (divHeight + 30) ; 
      str = '';  
+
+     lableArray.push(instructionLabelDiv);
    }
    
 }
