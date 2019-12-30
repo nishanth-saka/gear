@@ -37,6 +37,7 @@ function preload() {
   console.log('preload.. environment');
   turbineModel = loadModel('turbine.obj');
   textureObj = loadImage('tex.jpg');  
+  loadFont('avenir.otf');
 }
 
 let cnv;
@@ -121,16 +122,16 @@ function draw() {
 
 function labels(){
   let y=20;
-  let col = color(255,255,255,255);
+  let col = color(0,0,0, 200);
   for(var index =0;index < modelResponse.length;index ++){
     let str =  modelResponse[index].label + '. '+ modelResponse[index].info;
      let myDiv = createDiv(str);
      myDiv.style('background-color', col);
-   myDiv.style('font-family', 'Inconsolata'); 
-   myDiv.size(400, 73);  
-   myDiv.position(windowWidth - 400,y);
-   y += 75; 
-   str = '';  
+     myDiv.style('font-family', 'avenir');
+     myDiv.style('color', 'white');
+     myDiv.position(windowWidth - 400,y);
+     y += 75; 
+     str = '';  
    }
    
 }
