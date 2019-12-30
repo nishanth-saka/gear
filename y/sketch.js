@@ -127,7 +127,7 @@ function labels(){
      let myDiv = createDiv(str);
      myDiv.style('background-color', col);
    myDiv.style('font-family', 'Inconsolata'); 
-   myDiv.size(400, 400);  
+   myDiv.size(400, 73);  
    myDiv.position(windowWidth - 400,y);
    y += 75; 
    str = '';  
@@ -287,7 +287,7 @@ function testModel() {
           console.log(obj[0].confidence);
           // label = 'Object Identified: ' + obj[0].label;
           detectedObj = obj[0];
-
+          modelResponse = []; 
           let url = 'response.json';
          httpGet(url, 'json', false, function(response) {
            console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
