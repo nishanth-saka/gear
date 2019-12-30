@@ -30,8 +30,10 @@ let completionMsg = 'Set Up Complete.. added turbine draw';
 let detectedObj;
 let textureObj;
 
+let sampleLabel;
+
 function preload() {
-  console.log('preload ');
+  console.log('preload.. environment');
   turbineModel = loadModel('turbine.obj');
   textureObj = loadImage('tex.jpg');  
 }
@@ -49,7 +51,9 @@ function setup() {
         minWidth: windowWidth,
         minHeight: windowHeight
       },
-      // optional: [{ maxFrameRate: 10 }]
+      // facingMode: {
+      //   exact: "environment"
+      // }
     },
     audio: false
   };
@@ -75,9 +79,10 @@ function setup() {
   video.elt.setAttribute('playsinline', '');
   video.hide();
 
-  console.log('scale 3 images');
+  console.log('rectangle..');
   
 }
+
 
 
 function draw() {
@@ -102,15 +107,15 @@ function draw() {
         }  
       } else {
         rotateX(frameCount * 0.01);
-        rotateY(frameCount * 0.01);  
+        rotateY(frameCount * 0.01);          
       }      
     } else {
       rotateX(frameCount * 0.01);
-      rotateY(frameCount * 0.01);
-    
+      rotateY(frameCount * 0.01);          
     }
     fill(255);
-    model(turbineModel);            
+    translate(0, 0, 1);
+    model(turbineModel);          
   }
   
 }
