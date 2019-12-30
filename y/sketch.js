@@ -23,6 +23,7 @@ let imgYLoc = 0;
 var w = 640;
 var h = 480;
 
+let showModel = true;
 let loaded = false;
 let completionMsg = 'Set Up Complete.. added turbine draw';
 
@@ -55,18 +56,18 @@ function setup() {
   
  
   video = createCapture(constraints, function (stream) {
-    mobilenet = ml5.featureExtractor('MobileNet', function () {
+    mobilenet = ml5.featureExtractor('MobileNet',{numLabels:3}, function () {
       classifier = mobilenet.classification(video, function () {
-        // classifier.load('model.json', function(){
+        classifier.load('model.json', function(){
           video.hide();
           console.log(completionMsg);
           loaded = true;
           setUpButtons();
           showButtons();
 
-        //   testModel();
+          // testModel();
 
-        // })        
+        })        
       });
     });
   });
@@ -74,7 +75,7 @@ function setup() {
   video.elt.setAttribute('playsinline', '');
   video.hide();
 
-  console.log('scale 150');
+  console.log('scale 3 images');
   
 }
 
@@ -82,20 +83,33 @@ function setup() {
 function draw() {
   
   if(loaded){
-    
+
     background(200);
     image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
-    scale(200);
+    scale(150);
 
-    if(changeView){
-      rotateX(300);
-      rotateY(300);
+    if(!showModel){
+      if(detectedObj){
+        if(detectedObj.label === 'Right-View'){
+          rotateX(300);
+          rotateY(300);
+        } else if(detectedObj.label === 'Left-View'){
+          rotateX(-300);
+          rotateY(-300);
+        }  else if(detectedObj.label === 'Front-View'){
+          rotateX(0);
+          rotateY(0);
+        }  
+      } else {
+        rotateX(frameCount * 0.01);
+        rotateY(frameCount * 0.01);  
+      }      
     } else {
       rotateX(frameCount * 0.01);
       rotateY(frameCount * 0.01);
     
     }
-
+    fill(255);
     model(turbineModel);            
   }
   
@@ -113,7 +127,7 @@ function setUpButtons(){
   imgXLoc = 0;
   imgYLoc = rectHeight;
 
-  ellipse1XLoc = (windowWidth - ((ellipseWidth * 5) + gap * 4))/2;
+  ellipse1XLoc = (windowWidth - ((ellipseWidth * 2) + gap * 1))/2;
   ellipse1YLoc = (windowHeight - ellipseHeight) - ellipseHeight/2;
 
 
@@ -129,6 +143,9 @@ function setUpButtons(){
   ellipse5XLoc = ellipse4XLoc + ellipseWidth + gap;
   ellipse5YLoc = ellipse4YLoc;
 
+  ellipse6XLoc = ellipse5XLoc + ellipseWidth + gap;
+  ellipse6YLoc = ellipse5YLoc;
+
   
   //Making the canvas fill the window
   createCanvas(windowWidth, windowHeight, WEBGL);
@@ -136,40 +153,46 @@ function setUpButtons(){
   fill(bannerColor);
   rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
 
-  tbnTurbine = createButton('Turbine');
+  tbnTurbine = createButton('Show 3D');
   tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
   tbnTurbine.mousePressed(function(){
-    classifier.addImage(video, 'Turbine', function () {
-      changeView = !changeView;
-      console.log('Turbine...');   
-      label = 'Ready..';     
-    });
+    // classifier.addImage(video, 'Left-View', function () {
+    //   changeView = !changeView;
+    //   console.log('Left-View...');   
+    //   label = 'Ready..';     
+    // });
+
+    showModel = true;
   });
   tbnTurbine.size(ellipseWidth, ellipseHeight);
   tbnTurbine.hide();
 
 
-  btnHeli = createButton('Helicopter');
+  btnHeli = createButton('TEST');
   btnHeli.position(ellipse2XLoc, ellipse1YLoc);
   btnHeli.mousePressed(function(){
-    classifier.addImage(video, 'Helicopter', function () {
-      console.log('Helicopter...');   
-      label = 'Ready..';     
-    });
+    // classifier.addImage(video, 'Front-View', function () {
+    //   console.log('Front-View...');   
+    //   label = 'Ready..';     
+    // });
+
+    showModel = false;
+    testModel();
+
   });
   btnHeli.size(ellipseWidth, ellipseHeight);
   btnHeli.hide();
 
-  // btn3 = createButton('03');
-  // btn3.position(ellipse3XLoc, ellipse1YLoc);
-  // btn3.mousePressed(function(){
-  //   classifier.addImage(video, '03', function () {
-  //     console.log('03...');   
-  //     label = 'Ready..';     
-  //   });
-  // });
-  // btn3.size(ellipseWidth, ellipseHeight);
-  // btn3.hide();
+  btn3 = createButton('Right-View');
+  btn3.position(ellipse3XLoc, ellipse1YLoc);
+  btn3.mousePressed(function(){
+    classifier.addImage(video, 'Right-View', function () {
+      console.log('Right-View...');   
+      label = 'Ready..';     
+    });
+  });
+  btn3.size(ellipseWidth, ellipseHeight);
+  btn3.hide();
 
   btnTrain = createButton('TRAIN');
   btnTrain.position(ellipse4XLoc, ellipse1YLoc);
@@ -187,7 +210,15 @@ function setUpButtons(){
   btnTest.size(ellipseWidth, ellipseHeight);
   btnTest.hide();
 
-  console.log('trainModel...');
+  btnSave = createButton('Save');
+  btnSave.position(ellipse6XLoc, ellipse1YLoc);
+  btnSave.mousePressed(function(){
+    classifier.save();
+  });
+  btnSave.size(ellipseWidth, ellipseHeight);
+  btnSave.hide();
+
+  console.log('3 images...');
 }
 
 function whileTraining(loss) {
@@ -237,7 +268,8 @@ function testModel() {
           // label = 'Object Identified: ' + obj[0].label;
 
           detectedObj = obj[0];
-          testModel();
+
+          // testModel();
           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
           //   console.log('success from http call :::::: ', success);
           //   img = loadImage('./images/pexels-photo.jpg');
@@ -259,9 +291,10 @@ function testModel() {
 function showButtons(){
   tbnTurbine.show();
   btnHeli.show();
-  btnTrain.show();
-  btnTest.show();
-  btn3.show();
+  // btnTrain.show();
+  // btnTest.show();
+  // btn3.show();
+  // btnSave.show();
 }
 
 
