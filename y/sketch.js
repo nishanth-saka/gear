@@ -31,6 +31,7 @@ let detectedObj;
 let textureObj;
 
 let modelURL = 'https://firebasestorage.googleapis.com/v0/b/gear-v1.appspot.com/o/model.json?alt=media&token=363e381f-afb9-40ca-a2e0-9f226004b4a2';
+var modelResponse =  [];
 
 function preload() {
   console.log('preload ');
@@ -77,7 +78,7 @@ function setup() {
   video.elt.setAttribute('playsinline', '');
   video.hide();
 
-  console.log('scale 3 images');
+   
   
 }
 
@@ -112,9 +113,28 @@ function draw() {
     
     }
     fill(255);
-    model(turbineModel);            
+    model(turbineModel);  
+    
+    
+   
   }
   
+}
+
+function labels(){
+  let y=20;
+  let col = color(255,255,255,255);
+  for(var index =0;index < modelResponse.length;index ++){
+    let str =  modelResponse[index].label + '. '+ modelResponse[index].info;
+     let myDiv = createDiv(str);
+     myDiv.style('background-color', col);
+   myDiv.style('font-family', 'Inconsolata'); 
+   myDiv.size(400, 73);  
+   myDiv.position(windowWidth - 400,y);
+   y += 75; 
+   str = '';  
+   }
+   
 }
 
 let changeView = false;
@@ -268,8 +288,14 @@ function testModel() {
           console.log(obj[0].label);
           console.log(obj[0].confidence);
           // label = 'Object Identified: ' + obj[0].label;
-
           detectedObj = obj[0];
+          modelResponse = []; 
+          let url = 'response.json';
+         httpGet(url, 'json', false, function(response) {
+           console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
+           modelResponse =  response[obj[0].label].data;
+           labels();
+         });
 
           // testModel();
           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
