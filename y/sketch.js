@@ -34,8 +34,8 @@ let modelURL = 'https://firebasestorage.googleapis.com/v0/b/gear-v1.appspot.com/
 
 function preload() {
   console.log('preload ');
-  turbineModel = loadModel('turbine.obj');
-  textureObj = loadImage('tex.jpg');  
+  turbineModel = loadModel('http://172.18.3.219:8081/turbine.obj');
+  textureObj = loadImage('http://172.18.3.219:8081/tex.jpg');  
 }
 
 let cnv;
@@ -76,8 +76,6 @@ function setup() {
 
   video.elt.setAttribute('playsinline', '');
   video.hide();
-
-  console.log('scale 3 images');
   
 }
 
@@ -112,7 +110,11 @@ function draw() {
     
     }
     fill(255);
-    model(turbineModel);            
+    model(turbineModel);  
+    
+ 
+    
+   
   }
   
 }
@@ -268,8 +270,12 @@ function testModel() {
           console.log(obj[0].label);
           console.log(obj[0].confidence);
           // label = 'Object Identified: ' + obj[0].label;
-
           detectedObj = obj[0];
+
+          let url = 'http://172.18.3.219:8081/response.json';
+         httpGet(url, 'json', false, function(response) {
+           console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
+         });
 
           // testModel();
           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {

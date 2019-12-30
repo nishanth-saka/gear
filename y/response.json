@@ -1,0 +1,50 @@
+{
+    "Right-View":{
+        "data":[
+            {
+                "label":1,
+                "info": "info for Right-View label 1"
+            },
+            {
+                "label":2,
+                "info": "info for Right-View label 2"
+            },
+            {
+                "label":3,
+                "info": "info for Right-View label 3"
+            }
+        ]
+    },
+    "Left-View":{
+        "data":[
+            {
+                "label":1,
+                "info": "info for Left-View label 1"
+            },
+            {
+                "label":2,
+                "info": "info for Left-View label 2"
+            },
+            {
+                "label":3,
+                "info": "info for Left-View label 3"
+            }
+        ]
+    },
+    "Front-View":{
+        "data":[
+            {
+                "label":1,
+                "info": "info for Front-View label 1"
+            },
+            {
+                "label":2,
+                "info": "info for Front-View label 2"
+            },
+            {
+                "label":3,
+                "info": "info for Front-View label 3"
+            }
+        ]
+    }
+}
