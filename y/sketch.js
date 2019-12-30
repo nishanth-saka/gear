@@ -31,12 +31,13 @@ let detectedObj;
 let textureObj;
 
 let modelURL = 'https://firebasestorage.googleapis.com/v0/b/gear-v1.appspot.com/o/model.json?alt=media&token=363e381f-afb9-40ca-a2e0-9f226004b4a2';
-var modelResponse =  [];
+var modelResponse = [];
+let myDiv;
 
 function preload() {
   console.log('preload ');
   turbineModel = loadModel('turbine.obj');
-  textureObj = loadImage('tex.jpg');  
+  textureObj = loadImage('tex.jpg');
 }
 
 let cnv;
@@ -46,7 +47,7 @@ function setup() {
 
   // createCanvas(windowWidth, windowHeight);
 
-    let constraints = {
+  let constraints = {
     video: {
       mandatory: {
         minWidth: windowWidth,
@@ -56,12 +57,12 @@ function setup() {
     },
     audio: false
   };
-  
- 
+
+
   video = createCapture(constraints, function (stream) {
-    mobilenet = ml5.featureExtractor('MobileNet',{numLabels:3}, function () {
+    mobilenet = ml5.featureExtractor('MobileNet', { numLabels: 3 }, function () {
       classifier = mobilenet.classification(video, function () {
-        classifier.load(modelURL, function(){
+        classifier.load(modelURL, function () {
           video.hide();
           console.log(completionMsg);
           loaded = true;
@@ -70,7 +71,7 @@ function setup() {
 
           // testModel();
 
-        })        
+        })
       });
     });
   });
@@ -78,67 +79,69 @@ function setup() {
   video.elt.setAttribute('playsinline', '');
   video.hide();
 
-   
-  
+
+
 }
 
 
 function draw() {
-  
-  if(loaded){
+
+  if (loaded) {
 
     background(200);
-    image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
+    image(video, (0 - windowWidth / 2), (0 - windowHeight / 2), windowWidth, windowHeight);
     scale(150);
 
-    if(!showModel){
-      if(detectedObj){
-        if(detectedObj.label === 'Right-View'){
+    if (!showModel) {
+      if (detectedObj) {
+        if (detectedObj.label === 'Right-View') {
           rotateX(300);
           rotateY(300);
-        } else if(detectedObj.label === 'Left-View'){
+        } else if (detectedObj.label === 'Left-View') {
           rotateX(-300);
           rotateY(-300);
-        }  else if(detectedObj.label === 'Front-View'){
+        } else if (detectedObj.label === 'Front-View') {
           rotateX(0);
           rotateY(0);
-        }  
+        }
       } else {
         rotateX(frameCount * 0.01);
-        rotateY(frameCount * 0.01);  
-      }      
+        rotateY(frameCount * 0.01);
+      }
     } else {
       rotateX(frameCount * 0.01);
       rotateY(frameCount * 0.01);
-    
+
     }
     fill(255);
-    model(turbineModel);  
-    
-    
-   
+    model(turbineModel);
+
+
+
   }
-  
+
 }
 
-function labels(){
-  let y=20;
-  let col = color(255,255,255,255);
-  for(var index =0;index < modelResponse.length;index ++){
-    let str =  modelResponse[index].label + '. '+ modelResponse[index].info;
-     let myDiv = createDiv(str);
-     myDiv.style('background-color', col);
-   myDiv.style('font-family', 'Inconsolata'); 
-   myDiv.size(400, 73);  
-   myDiv.position(windowWidth - 400,y);
-   y += 75; 
-   str = '';  
-   }
-   
+function labels() {
+  let y = 20;
+  let col = color(255, 255, 255, 255);
+  for (var index = 0; index < modelResponse.length; index++) {
+
+    let str = modelResponse[index].label + '. ' + modelResponse[index].info;
+    myDiv = createDiv(str);
+    myDiv.style('background-color', col);
+    myDiv.style('font-family', 'Inconsolata');
+    myDiv.size(400, 73);
+    myDiv.id(index);
+    myDiv.position(windowWidth - 400, y);
+    y += 75;
+    str = '';
+  }
+
 }
 
 let changeView = false;
-function setUpButtons(){
+function setUpButtons() {
   rectWidth = windowWidth;
   rectHeight = windowHeight * 0.15;
   rectXLoc = 0;
@@ -149,8 +152,8 @@ function setUpButtons(){
   imgXLoc = 0;
   imgYLoc = rectHeight;
 
-  ellipse1XLoc = (windowWidth - ((ellipseWidth * 2) + gap * 1))/2;
-  ellipse1YLoc = (windowHeight - ellipseHeight) - ellipseHeight/2;
+  ellipse1XLoc = (windowWidth - ((ellipseWidth * 2) + gap * 1)) / 2;
+  ellipse1YLoc = (windowHeight - ellipseHeight) - ellipseHeight / 2;
 
 
   ellipse2XLoc = ellipse1XLoc + ellipseWidth + gap;
@@ -168,7 +171,7 @@ function setUpButtons(){
   ellipse6XLoc = ellipse5XLoc + ellipseWidth + gap;
   ellipse6YLoc = ellipse5YLoc;
 
-  
+
   //Making the canvas fill the window
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -177,14 +180,21 @@ function setUpButtons(){
 
   tbnTurbine = createButton('Show 3D');
   tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
-  tbnTurbine.mousePressed(function(){
+  tbnTurbine.mousePressed(function () {
     // classifier.addImage(video, 'Left-View', function () {
     //   changeView = !changeView;
     //   console.log('Left-View...');   
     //   label = 'Ready..';     
     // });
 
+    for (var index = 0; index < modelResponse.length; index++) {
+      var x = document.getElementById(index);
+      x.remove();
+    }
+
+
     showModel = true;
+
   });
   tbnTurbine.size(ellipseWidth, ellipseHeight);
   tbnTurbine.hide();
@@ -192,7 +202,7 @@ function setUpButtons(){
 
   btnHeli = createButton('TEST');
   btnHeli.position(ellipse2XLoc, ellipse1YLoc);
-  btnHeli.mousePressed(function(){
+  btnHeli.mousePressed(function () {
     // classifier.addImage(video, 'Front-View', function () {
     //   console.log('Front-View...');   
     //   label = 'Ready..';     
@@ -207,10 +217,10 @@ function setUpButtons(){
 
   btn3 = createButton('Right-View');
   btn3.position(ellipse3XLoc, ellipse1YLoc);
-  btn3.mousePressed(function(){
+  btn3.mousePressed(function () {
     classifier.addImage(video, 'Right-View', function () {
-      console.log('Right-View...');   
-      label = 'Ready..';     
+      console.log('Right-View...');
+      label = 'Ready..';
     });
   });
   btn3.size(ellipseWidth, ellipseHeight);
@@ -218,15 +228,15 @@ function setUpButtons(){
 
   btnTrain = createButton('TRAIN');
   btnTrain.position(ellipse4XLoc, ellipse1YLoc);
-  btnTrain.mousePressed(function(){
-      trainModel();
+  btnTrain.mousePressed(function () {
+    trainModel();
   });
   btnTrain.size(ellipseWidth, ellipseHeight);
   btnTrain.hide();
 
   btnTest = createButton('TEST');
   btnTest.position(ellipse5XLoc, ellipse1YLoc);
-  btnTest.mousePressed(function(){
+  btnTest.mousePressed(function () {
     testModel();
   });
   btnTest.size(ellipseWidth, ellipseHeight);
@@ -234,7 +244,7 @@ function setUpButtons(){
 
   btnSave = createButton('Save');
   btnSave.position(ellipse6XLoc, ellipse1YLoc);
-  btnSave.mousePressed(function(){
+  btnSave.mousePressed(function () {
     classifier.save();
   });
   btnSave.size(ellipseWidth, ellipseHeight);
@@ -272,51 +282,51 @@ function addedImage(res, err) {
   console.log(err);
 }
 
-function trainModel(){
+function trainModel() {
   console.log('Training Begins Please wait...');
-    label = 'Training Begins Please wait...';
-    classifier.train(whileTraining);  
+  label = 'Training Begins Please wait...';
+  classifier.train(whileTraining);
 }
 
 function testModel() {
   // label = '';
-      classifier.classify(video)
-        .then(function (obj) {
-          console.log('');
-          console.log('');
-          console.log('obj');
-          console.log(obj[0].label);
-          console.log(obj[0].confidence);
-          // label = 'Object Identified: ' + obj[0].label;
-          detectedObj = obj[0];
-          modelResponse = []; 
-          let url = 'response.json';
-         httpGet(url, 'json', false, function(response) {
-           console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
-           modelResponse =  response[obj[0].label].data;
-           labels();
-         });
+  classifier.classify(video)
+    .then(function (obj) {
+      console.log('');
+      console.log('');
+      console.log('obj');
+      console.log(obj[0].label);
+      console.log(obj[0].confidence);
+      // label = 'Object Identified: ' + obj[0].label;
+      detectedObj = obj[0];
+      modelResponse = [];
+      let url = 'response.json';
+      httpGet(url, 'json', false, function (response) {
+        console.log('success response for get call   ::::  ', response[obj[0].label].data);
+        modelResponse = response[obj[0].label].data;
+        labels();
+      });
 
-          // testModel();
-          // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
-          //   console.log('success from http call :::::: ', success);
-          //   img = loadImage('./images/pexels-photo.jpg');
-          //   // background(0);
-          //   //  image(img, 0, 0, 2048, 2048);
-          // }, function (error) {
-          //   console.log('error from http call :::::: ', error);
-          // });
+      // testModel();
+      // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
+      //   console.log('success from http call :::::: ', success);
+      //   img = loadImage('./images/pexels-photo.jpg');
+      //   // background(0);
+      //   //  image(img, 0, 0, 2048, 2048);
+      // }, function (error) {
+      //   console.log('error from http call :::::: ', error);
+      // });
 
 
-        })
-        .catch(function (err) {
-          console.log('Some error has occured');
-          console.log(err);
-          // label = 'Some error has occured';
-        });;
+    })
+    .catch(function (err) {
+      console.log('Some error has occured');
+      console.log(err);
+      // label = 'Some error has occured';
+    });;
 }
 
-function showButtons(){
+function showButtons() {
   tbnTurbine.show();
   btnHeli.show();
   // btnTrain.show();
@@ -387,7 +397,7 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 //   ellipse5XLoc = ellipse4XLoc + ellipseWidth + gap;
 //   ellipse5YLoc = ellipse4YLoc;
 
-  
+
 //   //Making the canvas fill the window
 //   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -432,7 +442,7 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 //   });
 //   btnTest.size(ellipseWidth, ellipseHeight);
 //   btnTest.hide();
-  
+
 
 //   let constraints = {
 //     video: {
@@ -444,8 +454,8 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 //     },
 //     audio: false
 //   };
-  
- 
+
+
 //   video = createCapture(constraints, function (stream) {
 //     mobilenet = ml5.featureExtractor('MobileNet', function () {
 //       classifier = mobilenet.classification(video, function () {
@@ -476,7 +486,7 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 
 //   if(loaded){
 //     // showButtons();
-    
+
 //     image(video, imgXLoc, imgYLoc, imgWidth, imgHeight);
 //     rotateX(frameCount * 0.01);
 //   rotateY(frameCount * 0.01);
@@ -541,7 +551,7 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 
 // function mousePressed() {
 
-  
+
 //   // Check if mouse is inside the circle
 //   let d = dist(mouseX, mouseY, ellipse1XLoc, ellipse1YLoc);
 
@@ -590,7 +600,7 @@ let tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
 
 //     if(objectType == 'Turbine'){
 
-      
+
 //       isClicked = true;
 //       setTimeout(() => {
 //         classifier.addImage(video, 'Turbine', function () {
