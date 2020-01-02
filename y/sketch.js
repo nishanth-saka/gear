@@ -1,30 +1,18 @@
 
 var turbineModel;
-var heliModel;
 
 var mobilenet;
 var video;
 var classifier;
-var sampleButton;
-var trainButton;
-var saveButton;
-var meButton;
-var label = '';
-var infoDiv;
-var isClicked = false;
-var img;
 
-var imgWidth = 500;
-var imgHeight = 500;
-var imgXLoc = 0;
-var imgYLoc = 0;
 
-var w = 640;
-var h = 480;
+var ellipseWidth = 80;
+var ellipseHeight = ellipseWidth;
+
 
 var showModel = false;
 var loaded = false;
-var completionMsg = 'Set Up Complete.. added turbine draw';
+var completionMsg = 'Set Up Complete.. ';
 
 var detectedObj;
 
@@ -85,13 +73,18 @@ function setup() {
   video.hide();  
 }
 
+var canvaPositionX;
+var canvaPositionY;
 function addCanvas(){
   console.log('addCanvas...');
   var canvasRefrence =  createCanvas(windowWidth, windowHeight, WEBGL);
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  canvasRefrence.position(x, y);
-  canvasRefrence.parent('divContainer');        
+  canvaPositionX = (windowWidth - width) / 2;
+  canvaPositionY = (windowHeight - height) / 2;
+  canvasRefrence.position(canvaPositionX, canvaPositionY);
+  canvasRefrence.parent('divContainer');   
+
+  console.log(canvasRefrence);
+
   testModel();        
 }
 
@@ -100,15 +93,11 @@ function addCloseButton(){
   closeButton = createButton('close');
   closeButton.position(10, 10);
   closeButton.mousePressed(function(){
-    // classifier.addImage(video, 'Left-View', function () {
-    //   changeView = !changeView;
-    //   console.log('Left-View...');
-    //   label = 'Ready..';
-    // });
 
     showModel = false;
     removeCloseButton(closeButton);
     hideLables();
+
   });
 
   closeButton.size(ellipseWidth, ellipseHeight);    
@@ -132,22 +121,17 @@ function draw() {
       console.log('Drawing ' + detectedObj.label);
       
       if(detectedObj.label === 'Right-View'){
-        // rotateX(300);
-        // rotateY(300);
-
+       
         image(rightViewImg, (0 - windowWidth/2), (0 - windowHeight/2), rightViewImg.width/3, rightViewImg.height/3);
 
       } else if(detectedObj.label === 'Left-View'){
         // rotateX(-300);
-        // rotateY(-300);
-
         image(leftViewImg, (0 - windowWidth/2), (0 - windowHeight/2), leftViewImg.width/3, leftViewImg.height/3);
 
       }  else if(detectedObj.label === 'Front-View'){
-        // rotateX(0);
-        // rotateY(0);
 
-        image(frontViewImg, (0 - windowWidth/2), (0 - windowHeight/2), frontViewImg.width/3, frontViewImg.height/3);
+        image(frontViewImg, (0 - windowWidth/2), (0 - windowHeight/2), (windowWidth * (frontViewImg.height/frontViewImg.width)), (windowHeight * (frontViewImg.height/frontViewImg.width)));
+
       }
     }
 
@@ -156,9 +140,6 @@ function draw() {
 }
 
 function testModel() {
-  // label = '';
-    
-
   classifier.classify(video)
     .then(function (obj) {
       
@@ -259,217 +240,5 @@ function hideLables(){
   }
 }
 
-var changeView = false;
-// function setUpButtons(){
-//   rectWidth = windowWidth;
-//   rectHeight = windowHeight * 0.15;
-//   rectXLoc = 0;
-//   rectYLoc = 0;
-
-//   imgWidth = windowWidth;
-//   imgHeight = windowHeight * 0.9;
-//   imgXLoc = 0;
-//   imgYLoc = rectHeight;
-
-//   ellipse1XLoc = (windowWidth - ((ellipseWidth * 2) + gap * 1))/2;
-//   ellipse1YLoc = (windowHeight - ellipseHeight) - ellipseHeight/2;
 
 
-//   ellipse2XLoc = ellipse1XLoc + ellipseWidth + gap;
-//   ellipse2YLoc = ellipse1YLoc;
-
-//   ellipse3XLoc = ellipse2XLoc + ellipseWidth + gap;
-//   ellipse3YLoc = ellipse2YLoc;
-
-//   ellipse4XLoc = ellipse3XLoc + ellipseWidth + gap;
-//   ellipse4YLoc = ellipse3YLoc;
-
-//   ellipse5XLoc = ellipse4XLoc + ellipseWidth + gap;
-//   ellipse5YLoc = ellipse4YLoc;
-
-//   ellipse6XLoc = ellipse5XLoc + ellipseWidth + gap;
-//   ellipse6YLoc = ellipse5YLoc;
-
-
-//   //Making the canvas fill the window
-//   createCanvas(windowWidth, windowHeight, WEBGL);
-
-//   fill(bannerColor);
-//   rect(rectXLoc, rectYLoc, rectWidth, rectHeight);
-
-//   tbnTurbine = createButton('Show 3D');
-//   tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
-//   tbnTurbine.mousePressed(function(){
-//     // classifier.addImage(video, 'Left-View', function () {
-//     //   changeView = !changeView;
-//     //   console.log('Left-View...');
-//     //   label = 'Ready..';
-//     // });
-//     showModel = true;
-//   });
-
-//   tbnTurbine.size(ellipseWidth, ellipseHeight);
-//   tbnTurbine.hide();
-
-
-//   btnHeli = createButton('TEST');
-//   btnHeli.position(ellipse2XLoc, ellipse1YLoc);
-//   btnHeli.mousePressed(function(){
-//     // classifier.addImage(video, 'Front-View', function () {
-//     //   console.log('Front-View...');
-//     //   label = 'Ready..';
-//     // });
-
-//     showModel = false;
-//     testModel();
-
-//   });
-
-//   btnHeli.size(ellipseWidth, ellipseHeight);
-//   btnHeli.hide();
-
-//   // tbnTurbine = createButton('Left-View');
-//   // tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
-//   // tbnTurbine.mousePressed(function(){
-//   //   classifier.addImage(video, 'Left-View', function () {
-//   //     changeView = !changeView;
-//   //     console.log('Left-View...');
-//   //     label = 'Ready..';
-//   //   });
-//   // });
-//   // tbnTurbine.size(ellipseWidth, ellipseHeight);
-//   // tbnTurbine.hide();
-
-
-//   // btnHeli = createButton('Front-View');
-//   // btnHeli.position(ellipse2XLoc, ellipse1YLoc);
-//   // btnHeli.mousePressed(function(){
-//   //   classifier.addImage(video, 'Front-View', function () {
-//   //     console.log('Front-View...');
-//   //     label = 'Ready..';
-//   //   });
-//   // });
-
-//   // btnHeli.size(ellipseWidth, ellipseHeight);
-//   // btnHeli.hide();
-
-//   // btn3 = createButton('Right-View');
-//   // btn3.position(ellipse3XLoc, ellipse1YLoc);
-//   // btn3.mousePressed(function(){
-//   //   classifier.addImage(video, 'Right-View', function () {
-//   //     console.log('Right-View...');
-//   //     label = 'Ready..';
-//   //   });
-//   // });
-//   // btn3.size(ellipseWidth, ellipseHeight);
-//   // btn3.hide();
-
-//   // btnTrain = createButton('TRAIN');
-//   // btnTrain.position(ellipse4XLoc, ellipse1YLoc);
-//   // btnTrain.mousePressed(function(){
-//   //     trainModel();
-//   // });
-//   // btnTrain.size(ellipseWidth, ellipseHeight);
-//   // btnTrain.hide();
-
-//   // btnTest = createButton('TEST');
-//   // btnTest.position(ellipse5XLoc, ellipse1YLoc);
-//   // btnTest.mousePressed(function(){
-//   //   testModel();
-//   // });
-//   // btnTest.size(ellipseWidth, ellipseHeight);
-//   // btnTest.hide();
-
-//   // btnSave = createButton('Save');
-//   // btnSave.position(ellipse6XLoc, ellipse1YLoc);
-//   // btnSave.mousePressed(function(){
-//   //   classifier.save();
-//   // });
-//   // btnSave.size(ellipseWidth, ellipseHeight);
-//   // btnSave.hide();
-
-//   console.log('3 images...');
-// }
-
-function whileTraining(loss) {
-  console.log('Training...');
-  console.log(loss);
-  label = 'Training Please wait...';
-  if (!loss) {
-    //label = 'Training Complete!';
-    label = 'DONE!';
-    console.log('Training Complete!');
-    label = '';
-  }
-}
-
-function gotResults(error, results) {
-  console.log('gotResults..');
-  if (error) {
-    //label = error;
-    console.error(error);
-  } else {
-    label = result;
-    classifier.classify(gotResults);
-  }
-}
-
-function addedImage(res, err) {
-  console.log('addedImage');
-  console.log(res);
-  console.log(err);
-}
-
-function trainModel(){
-  console.log('Training Begins Please wait...');
-    label = 'Training Begins Please wait...';
-    classifier.train(whileTraining);
-}
-
-
-
-function showButtons(){
-  closeButton.show();
-  // btnHeli.show();
-  // btnTrain.show();
-  // btnTest.show();
-  // btn3.show();
-  // btnSave.show();
-}
-
-
-
-var rectWidth;
-var rectHeight;
-var rectXLoc;
-var rectYLoc;
-
-
-
-var bannerColor = 'rgb(83,73,156)';
-var buttonColor = 'rgb(255, 255, 255)';
-
-var gap = 20;
-var ellipseWidth = 80;
-var ellipseHeight = ellipseWidth;
-
-var ellipse1XLoc;
-var ellipse1YLoc;
-
-var ellipse2XLoc;
-var ellipse2YLoc;
-
-var ellipse3XLoc;
-var ellipse3YLoc;
-
-var ellipse4XLoc;
-var ellipse4YLoc;
-
-var ellipse5XLoc;
-var ellipse5YLoc;
-
-var tbnTurbine, btnHeli, btn3, btnTrain, btnTest, btnSave;
-// var containerId;
-// function demo(){
-//   containerId = str;
-// }
