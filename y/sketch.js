@@ -86,15 +86,17 @@ function setup() {
 }
 
 function addCanvas(){
+  console.log('addCanvas...');
   var canvasRefrence =  createCanvas(windowWidth, windowHeight, WEBGL);
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
   canvasRefrence.position(x, y);
   //canvasRefrence.parent('container');        
-  addCloseButton();          
+  testModel();        
 }
 
 function addCloseButton(){
+  console.log('addCloseButton...');
   closeButton = createButton('close');
   closeButton.position(10, 10);
   closeButton.mousePressed(function(){
@@ -104,19 +106,16 @@ function addCloseButton(){
     //   label = 'Ready..';
     // });
 
-    removeCloseButton();
+    removeCloseButton(closeButton);
     hideLables();
   });
 
-  closeButton.size(ellipseWidth, ellipseHeight);
-  
-  testModel();
+  closeButton.size(ellipseWidth, ellipseHeight);    
 }
 
-function removeCloseButton(){
-  if(closeButton != null){
-    closeButton.remove();
-  }
+function removeCloseButton(btn){
+  btn.remove();
+  testModel();
 }
 
 
@@ -400,41 +399,40 @@ function testModel() {
 
   classifier.classify(video)
     .then(function (obj) {
+      
+      console.log('...');
 
-      if(obj[0].confidence > 0.9991){
+      detectedObj = obj[0];
+      modelResponse = [];
+
+      if(detectedObj.confidence > 0.999){
         console.log('');
-        console.log((obj[0].confidence * 100));   
+        console.log((detectedObj.confidence * 100));   
       }
       
 
       // label = 'Object Identified: ' + obj[0].label;
-      detectedObj = obj[0];
-      modelResponse = [];
-      var url = 'response.json';
-     httpGet(url, 'json', false, function(response) {
-       //console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
-       if(obj[0].confidence > 0.9991){
+      
+
+      if(detectedObj.confidence > 0.9991){
         
         console.log('');
-        console.log((obj[0].confidence * 100));
+        console.log((detectedObj.confidence * 100));
+        console.log(detectedObj.label);
         console.log('Detected Images with Confidence > 99.99% - stop detecting..');
 
-        modelResponse =  response[obj[0].label].data;
-        labels();
-
-        console.log('');
-        console.log('');
-        console.log('obj');
-        console.log(obj[0].label);
-        console.log(obj[0].confidence);
-        console.log(closeButton);
-
-        
-        addCloseButton();
+        var url = 'response.json';
+        httpGet(url, 'json', false, function(response) {
+        //console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
+          modelResponse =  response[detectedObj.label].data;
+          labels();
+          addCloseButton();
+        })              
        } else {
         testModel();
-       }            
-     })
+       }      
+
+      
 
       
       // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
