@@ -22,7 +22,7 @@ var imgYLoc = 0;
 var w = 640;
 var h = 480;
 
-var showModel = true;
+var showModel = false;
 var loaded = false;
 var completionMsg = 'Set Up Complete.. added turbine draw';
 
@@ -91,7 +91,7 @@ function addCanvas(){
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
   canvasRefrence.position(x, y);
-  //canvasRefrence.parent('container');        
+  canvasRefrence.parent('divContainer');        
   testModel();        
 }
 
@@ -106,6 +106,7 @@ function addCloseButton(){
     //   label = 'Ready..';
     // });
 
+    showModel = false;
     removeCloseButton(closeButton);
     hideLables();
   });
@@ -126,64 +127,88 @@ function draw() {
     background(200);
     image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);
 
+    if(detectedObj && showModel){
 
+      console.log('Drawing ' + detectedObj.label);
+      
+      if(detectedObj.label === 'Right-View'){
+        // rotateX(300);
+        // rotateY(300);
 
-    if(!showModel){
+        image(rightViewImg, (0 - windowWidth/2), (0 - windowHeight/2), rightViewImg.width/3, rightViewImg.height/3);
 
-      if(detectedObj){
+      } else if(detectedObj.label === 'Left-View'){
+        // rotateX(-300);
+        // rotateY(-300);
 
+        image(leftViewImg, (0 - windowWidth/2), (0 - windowHeight/2), leftViewImg.width/3, leftViewImg.height/3);
 
-        if(detectedObj.label === 'Right-View'){
-          // rotateX(300);
-          // rotateY(300);
+      }  else if(detectedObj.label === 'Front-View'){
+        // rotateX(0);
+        // rotateY(0);
 
-          image(rightViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);
-
-        } else if(detectedObj.label === 'Left-View'){
-          // rotateX(-300);
-          // rotateY(-300);
-
-          image(leftViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);
-
-        }  else if(detectedObj.label === 'Front-View'){
-          // rotateX(0);
-          // rotateY(0);
-
-          image(frontViewImg, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth/2, windowHeight/2);
-        }
-      } else {
-
-        // scale(100);
-        // rotateX(frameCount * 0.01);
-        // rotateY(frameCount * 0.01);
-        // hideLables();
-        // fill(255);
-        // translate(0, 0, 1);
-        // model(turbineModel);
+        image(frontViewImg, (0 - windowWidth/2), (0 - windowHeight/2), frontViewImg.width/3, frontViewImg.height/3);
       }
-    } else {
-      // image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);
-      // scale(100);
-      // hideLables();
-      // rotateX(frameCount * 0.01);
-      // rotateY(frameCount * 0.01);
-      // fill(255);
-      // translate(0, 0, 1);
-      // model(turbineModel);
-
     }
 
   }
 
 }
 
-function hideLables(){
-  if(lableArray && lableArray.length > 0){
-    for(var i = 0; i < lableArray.length; i++){
-      lableArray[i].remove();
-    }
-  }
+function testModel() {
+  // label = '';
+    
+
+  classifier.classify(video)
+    .then(function (obj) {
+      
+      console.log('...');
+
+      detectedObj = obj[0];
+      modelResponse = [];
+
+      if(detectedObj.confidence > 0.9991){
+        
+        console.log('');
+        console.log((detectedObj.confidence * 100));
+        console.log(detectedObj.label);
+        console.log('Detected Images with Confidence > 99.99% - stop detecting..');
+
+        var url = 'response.json';
+        httpGet(url, 'json', false, function(response) {
+        //console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
+          modelResponse =  response[detectedObj.label].data;
+          labels();
+          addCloseButton();
+          showModel = true;
+        })              
+       } else {
+        showModel = false;
+        testModel();
+       }      
+
+      
+
+      
+      // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
+      //   console.log('success from http call :::::: ', success);
+      //   img = loadImage('./images/pexels-photo.jpg');
+      //   // background(0);
+      //   //  image(img, 0, 0, 2048, 2048);
+      // }, function (error) {
+      //   console.log('error from http call :::::: ', error);
+      // });
+
+
+    })
+    .catch(function (err) {
+      console.log('Some error has occured');
+      console.log(err);
+      // label = 'Some error has occured';
+    })
 }
+
+
 
 var headerLabelDiv;
 var instructionLabelDiv;
@@ -195,7 +220,7 @@ function labels(){
 
   var y= 65;
   var divHeight = 75;
-  var divWidth = 400;
+  var divWidth = windowWidth/3;
   var col = color(0,0,0, 200);
 
    headerLabelDiv = createDiv('INSTRUCTIONS:');
@@ -203,7 +228,7 @@ function labels(){
    headerLabelDiv.style('font-family', 'avenir');
    headerLabelDiv.style('color', 'white');
    headerLabelDiv.style('padding', '10px');
-   headerLabelDiv.size(400, 30);
+   headerLabelDiv.size(divWidth, 30);
    headerLabelDiv.position(windowWidth - (divWidth + 100), 10);
 
    lableArray.push(headerLabelDiv);
@@ -216,7 +241,7 @@ function labels(){
      instructionLabelDiv.style('font-family', 'avenir');
      instructionLabelDiv.style('color', 'white');
      instructionLabelDiv.style('padding', '10px');
-     instructionLabelDiv.size(400, divHeight);
+     instructionLabelDiv.size(divWidth, divHeight);
      instructionLabelDiv.position(windowWidth - (divWidth + 100), y);
      y += (divHeight + 30) ;
      str = '';
@@ -224,6 +249,14 @@ function labels(){
      lableArray.push(instructionLabelDiv);
    }
 
+}
+
+function hideLables(){
+  if(lableArray && lableArray.length > 0){
+    for(var i = 0; i < lableArray.length; i++){
+      lableArray[i].remove();
+    }
+  }
 }
 
 var changeView = false;
@@ -391,66 +424,6 @@ function trainModel(){
   console.log('Training Begins Please wait...');
     label = 'Training Begins Please wait...';
     classifier.train(whileTraining);
-}
-
-function testModel() {
-  // label = '';
-    
-
-  classifier.classify(video)
-    .then(function (obj) {
-      
-      console.log('...');
-
-      detectedObj = obj[0];
-      modelResponse = [];
-
-      if(detectedObj.confidence > 0.999){
-        console.log('');
-        console.log((detectedObj.confidence * 100));   
-      }
-      
-
-      // label = 'Object Identified: ' + obj[0].label;
-      
-
-      if(detectedObj.confidence > 0.9991){
-        
-        console.log('');
-        console.log((detectedObj.confidence * 100));
-        console.log(detectedObj.label);
-        console.log('Detected Images with Confidence > 99.99% - stop detecting..');
-
-        var url = 'response.json';
-        httpGet(url, 'json', false, function(response) {
-        //console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
-          modelResponse =  response[detectedObj.label].data;
-          labels();
-          addCloseButton();
-        })              
-       } else {
-        testModel();
-       }      
-
-      
-
-      
-      // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
-      //   console.log('success from http call :::::: ', success);
-      //   img = loadImage('./images/pexels-photo.jpg');
-      //   // background(0);
-      //   //  image(img, 0, 0, 2048, 2048);
-      // }, function (error) {
-      //   console.log('error from http call :::::: ', error);
-      // });
-
-
-    })
-    .catch(function (err) {
-      console.log('Some error has occured');
-      console.log(err);
-      // label = 'Some error has occured';
-    })
 }
 
 
