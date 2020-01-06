@@ -69,7 +69,7 @@ function setup() {
   video = createCapture(constraints, function (stream) {
     mobilenet = ml5.featureExtractor('MobileNet',{numLabels:3}, function () {
       classifier = mobilenet.classification(video, function () {
-        classifier.load(modelURL, function(){
+        // classifier.load(modelURL, function(){
           video.hide();
           console.log(completionMsg);
           loaded = true;
@@ -78,7 +78,7 @@ function setup() {
 
           // testModel();
 
-        })        
+        // })        
       });
     });
   });
@@ -124,23 +124,23 @@ function draw() {
         }
       } else {
         
-        scale(100); 
-        rotateX(frameCount * 0.01);
-        rotateY(frameCount * 0.01);    
-        hideLables();     
-        fill(255);
-        translate(0, 0, 1);
-        model(turbineModel);   
+        // scale(100); 
+        // rotateX(frameCount * 0.01);
+        // rotateY(frameCount * 0.01);    
+        // hideLables();     
+        // fill(255);
+        // translate(0, 0, 1);
+        // model(turbineModel);   
       }      
     } else {
       // image(video, (0 - windowWidth/2), (0 - windowHeight/2), windowWidth, windowHeight);  
-      scale(100);
-      hideLables();
-      rotateX(frameCount * 0.01);
-      rotateY(frameCount * 0.01);      
-      fill(255);
-      translate(0, 0, 1);
-      model(turbineModel);  
+      // scale(100);
+      // hideLables();
+      // rotateX(frameCount * 0.01);
+      // rotateY(frameCount * 0.01);      
+      // fill(255);
+      // translate(0, 0, 1);
+      // model(turbineModel);  
 
     }
             
@@ -266,65 +266,65 @@ function setUpButtons(){
   btnHeli.size(ellipseWidth, ellipseHeight);
   btnHeli.hide();
 
-  // tbnTurbine = createButton('Left-View');
-  // tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
-  // tbnTurbine.mousePressed(function(){
-  //   classifier.addImage(video, 'Left-View', function () {
-  //     changeView = !changeView;
-  //     console.log('Left-View...');   
-  //     label = 'Ready..';     
-  //   });
-  // });
-  // tbnTurbine.size(ellipseWidth, ellipseHeight);
-  // tbnTurbine.hide();
+  tbnTurbine = createButton('Left-View');
+  tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
+  tbnTurbine.mousePressed(function(){
+    classifier.addImage(video, 'Left-View', function () {
+      changeView = !changeView;
+      console.log('Left-View...');   
+      label = 'Ready..';     
+    });
+  });
+  tbnTurbine.size(ellipseWidth, ellipseHeight);
+  tbnTurbine.hide();
 
 
-  // btnHeli = createButton('Front-View');
-  // btnHeli.position(ellipse2XLoc, ellipse1YLoc);
-  // btnHeli.mousePressed(function(){
-  //   classifier.addImage(video, 'Front-View', function () {
-  //     console.log('Front-View...');   
-  //     label = 'Ready..';     
-  //   });
-  // });
+  btnHeli = createButton('Front-View');
+  btnHeli.position(ellipse2XLoc, ellipse1YLoc);
+  btnHeli.mousePressed(function(){
+    classifier.addImage(video, 'Front-View', function () {
+      console.log('Front-View...');   
+      label = 'Ready..';     
+    });
+  });
 
-  // btnHeli.size(ellipseWidth, ellipseHeight);
-  // btnHeli.hide();
+  btnHeli.size(ellipseWidth, ellipseHeight);
+  btnHeli.hide();
 
-  // btn3 = createButton('Right-View');
-  // btn3.position(ellipse3XLoc, ellipse1YLoc);
-  // btn3.mousePressed(function(){
-  //   classifier.addImage(video, 'Right-View', function () {
-  //     console.log('Right-View...');   
-  //     label = 'Ready..';     
-  //   });
-  // });
-  // btn3.size(ellipseWidth, ellipseHeight);
-  // btn3.hide();
+  btn3 = createButton('Right-View');
+  btn3.position(ellipse3XLoc, ellipse1YLoc);
+  btn3.mousePressed(function(){
+    classifier.addImage(video, 'Right-View', function () {
+      console.log('Right-View...');   
+      label = 'Ready..';     
+    });
+  });
+  btn3.size(ellipseWidth, ellipseHeight);
+  btn3.hide();
 
-  // btnTrain = createButton('TRAIN');
-  // btnTrain.position(ellipse4XLoc, ellipse1YLoc);
-  // btnTrain.mousePressed(function(){
-  //     trainModel();
-  // });
-  // btnTrain.size(ellipseWidth, ellipseHeight);
-  // btnTrain.hide();
+  btnTrain = createButton('TRAIN');
+  btnTrain.position(ellipse4XLoc, ellipse1YLoc);
+  btnTrain.mousePressed(function(){
+      trainModel();
+  });
+  btnTrain.size(ellipseWidth, ellipseHeight);
+  btnTrain.hide();
 
-  // btnTest = createButton('TEST');
-  // btnTest.position(ellipse5XLoc, ellipse1YLoc);
-  // btnTest.mousePressed(function(){
-  //   testModel();
-  // });
-  // btnTest.size(ellipseWidth, ellipseHeight);
-  // btnTest.hide();
+  btnTest = createButton('TEST');
+  btnTest.position(ellipse5XLoc, ellipse1YLoc);
+  btnTest.mousePressed(function(){
+    testModel();
+  });
+  btnTest.size(ellipseWidth, ellipseHeight);
+  btnTest.hide();
 
-  // btnSave = createButton('Save');
-  // btnSave.position(ellipse6XLoc, ellipse1YLoc);
-  // btnSave.mousePressed(function(){
-  //   classifier.save();
-  // });
-  // btnSave.size(ellipseWidth, ellipseHeight);
-  // btnSave.hide();
+  btnSave = createButton('Save');
+  btnSave.position(ellipse6XLoc, ellipse1YLoc);
+  btnSave.mousePressed(function(){
+    classifier.save();
+  });
+  btnSave.size(ellipseWidth, ellipseHeight);
+  btnSave.hide();
 
   console.log('3 images...');
 }
@@ -405,10 +405,10 @@ function testModel() {
 function showButtons(){
   tbnTurbine.show();
   btnHeli.show();
-  // btnTrain.show();
-  // btnTest.show();
-  // btn3.show();
-  // btnSave.show();
+  btnTrain.show();
+  btnTest.show();
+  btn3.show();
+  btnSave.show();
 }
 
 
