@@ -380,7 +380,7 @@ function testModel() {
          httpGet(url, 'json', false, function(response) {
            console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
            modelResponse =  response[obj[0].label].data;
-           labels();
+           //labels();
          });
 
           // testModel();
