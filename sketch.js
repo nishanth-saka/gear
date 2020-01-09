@@ -73,9 +73,12 @@ function setup() {
           video.hide();
           console.log(completionMsg);
           loaded = true;
-          setUpButtons();
-          showButtons();
-
+          //setUpButtons();
+          //showButtons();
+            console.log('Saving Model');
+            let x = classifier.save();
+            console.log('Saved Model');
+            console.log(x);
           // testModel();
 
         // })        
