@@ -353,10 +353,10 @@ function setUpButtons(){
 function trainingUsingImages(side){
   switch(side){
       case "FRONT":
-        let frontImg = createImg('front-view.png', () => {
+        let frontImg = createImg('right-view-flip.png', () => {
           frontImg.hide();
-          classifier.addImage(frontImg, 'Front-View', function () {
-              console.log('Front-View...');   
+          classifier.addImage(frontImg, 'Flip-View', function () {
+              console.log('Flip-View...');   
               label = 'Ready..';     
             });
           });
