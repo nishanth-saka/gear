@@ -1,6 +1,6 @@
 // 
 
-let turbineModel;
+//let turbineModel;
 let heliModel;
 
 let mobilenet;
@@ -37,7 +37,7 @@ let img_;
 
 function preload() {
   console.log('preload.. environment');
-  turbineModel = loadModel('turbine.obj');
+  //turbineModel = loadModel('turbine.obj');
   rightViewImg = loadImage('right-view.png');
   leftViewImg = loadImage('left-view.png');
   frontViewImg = loadImage('front-view.png');
@@ -65,21 +65,29 @@ function setup() {
     audio: false
   };
   
- 
+ let featureConstraint = {
+  // version: 1,
+  // alpha: 1.0,
+  topk: 3,
+  learningRate: 0.0001,
+  hiddenUnits: 100,
+  epochs: 300,
+  numLabels: 3,
+  batchSize: 0.4,
+ };
+
   video = createCapture(constraints, function (stream) {
-    mobilenet = ml5.featureExtractor('MobileNet',{numLabels:3}, function () {
+    mobilenet = ml5.featureExtractor('MobileNet',featureConstraint, function () {
       classifier = mobilenet.classification(video, function () {
         // classifier.load(modelURL, function(){
           video.hide();
           console.log(completionMsg);
           loaded = true;
-          //setUpButtons();
-          //showButtons();
-            console.log('Saving Model');
-            let x = classifier.save();
-            console.log('Saved Model');
-            console.log(x);
+          setUpButtons();
+          showButtons();
+            
           // testModel();
+
 
         // })        
       });
@@ -90,6 +98,7 @@ function setup() {
   video.hide();
   
 }
+
 
 
 
@@ -272,11 +281,14 @@ function setUpButtons(){
   tbnTurbine = createButton('Left-View');
   tbnTurbine.position(ellipse1XLoc, ellipse1YLoc);
   tbnTurbine.mousePressed(function(){
-    classifier.addImage(video, 'Left-View', function () {
-      changeView = !changeView;
-      console.log('Left-View...');   
-      label = 'Ready..';     
-    });
+    
+    trainingUsingImages("LEFT");
+
+    // classifier.addImage(video, 'Left-View', function () {
+    //   changeView = !changeView;
+    //   console.log('Left-View...');   
+    //   label = 'Ready..';     
+    // });
   });
   tbnTurbine.size(ellipseWidth, ellipseHeight);
   tbnTurbine.hide();
@@ -285,10 +297,13 @@ function setUpButtons(){
   btnHeli = createButton('Front-View');
   btnHeli.position(ellipse2XLoc, ellipse1YLoc);
   btnHeli.mousePressed(function(){
-    classifier.addImage(video, 'Front-View', function () {
-      console.log('Front-View...');   
-      label = 'Ready..';     
-    });
+    
+    trainingUsingImages("FRONT");
+
+    // classifier.addImage(video, 'Front-View', function () {
+    //   console.log('Front-View...');   
+    //   label = 'Ready..';     
+    // });
   });
 
   btnHeli.size(ellipseWidth, ellipseHeight);
@@ -297,10 +312,13 @@ function setUpButtons(){
   btn3 = createButton('Right-View');
   btn3.position(ellipse3XLoc, ellipse1YLoc);
   btn3.mousePressed(function(){
-    classifier.addImage(video, 'Right-View', function () {
-      console.log('Right-View...');   
-      label = 'Ready..';     
-    });
+    
+    trainingUsingImages("RIGHT");
+
+    // classifier.addImage(video, 'Right-View', function () {
+    //   console.log('Right-View...');   
+    //   label = 'Ready..';     
+    // });
   });
   btn3.size(ellipseWidth, ellipseHeight);
   btn3.hide();
@@ -332,6 +350,40 @@ function setUpButtons(){
   console.log('3 images...');
 }
 
+function trainingUsingImages(side){
+  switch(side){
+      case "FRONT":
+        let frontImg = createImg('front-view.png', () => {
+          frontImg.hide();
+          classifier.addImage(frontImg, 'Front-View', function () {
+              console.log('Front-View...');   
+              label = 'Ready..';     
+            });
+          });
+      break;
+
+      case "LEFT":
+        let leftImg = createImg('left-view.png', () => {
+          leftImg.hide();
+          classifier.addImage(leftImg, 'Left-View', function () {
+              console.log('Left-View...');   
+              label = 'Ready..';     
+            });
+          });
+      break;
+
+      case "RIGHT":
+        let rightImg = createImg('right-view.png', () => {
+          rightImg.hide();
+          classifier.addImage(rightImg, 'Right-View', function () {
+              console.log('Right-View...');   
+              label = 'Ready..';     
+            });
+          });
+      break;
+  }
+}
+
 function whileTraining(loss) {
   console.log('Training...');
   console.log(loss);
@@ -351,7 +403,7 @@ function gotResults(error, results) {
     console.error(error);
   } else {
     label = result;
-    classifier.classify(gotResults);
+    classifier.classify(gotResults);    
   }
 }
 
@@ -374,18 +426,25 @@ function testModel() {
           console.log('');
           console.log('');
           console.log('obj');
+          console.log(obj);
+          console.log('');
           console.log(obj[0].label);
           console.log(obj[0].confidence);
           // label = 'Object Identified: ' + obj[0].label;
           detectedObj = obj[0];
           modelResponse = []; 
           let url = 'response.json';
-         httpGet(url, 'json', false, function(response) {
-           console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
-           modelResponse =  response[obj[0].label].data;
-           //labels();
-         });
+        //  httpGet(url, 'json', false, function(response) {
+        //    console.log('success response for get call   ::::  ' ,response[obj[0].label].data);
+        //    modelResponse =  response[obj[0].label].data;
+        //    //labels();
+        //  });
 
+         if(obj[0].confidence < 0.9){
+          testModel();
+         } else {
+          console.log('DONE!');
+         }
           // testModel();
           // httpPost('https://reqres.in/api/users', 'json', { "name": "morpheus", "job": "leader" }, function (success) {
           //   console.log('success from http call :::::: ', success);
